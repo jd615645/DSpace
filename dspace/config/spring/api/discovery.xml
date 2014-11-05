@@ -268,9 +268,9 @@
 				<ref bean="searchFilterAuthor" />
 				<ref bean="searchFilterSubject" />
 				<ref bean="searchFilterIssued" />
-				<ref bean="searchFilterObjectType" />
+				<!-- <ref bean="searchFilterObjectType" /> -->
 				<ref bean="searchFilterObjectPeople" />
-				<ref bean="searchFilterObjectOU" />
+				<!-- <ref bean="searchFilterObjectOU" /> -->
 			</list>
 		</property>
 		<!--The search filters which can be used on the discovery search page -->
