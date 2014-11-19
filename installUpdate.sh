@@ -8,17 +8,17 @@ if [ -z "$1" ]; then
 	echo "        $0 {log_path}"
 	exit
 fi
-dspace_src="$PWD"
+dspace_src="$( cd "$( dirname "$0" )" && pwd )"
+log="$(cd $(dirname $1); pwd)/$(basename $1)"
+echo "=========== Src location: $dspace_src ===========" > $log
 
-echo "=========== Src location: $dspace_src ===========" > $1
+cd $dspace_src >> $log
 
-cd $dspace_src >> $1
+echo "=========== mvn package ===========" >> $log
+mvn -U clean package >> $log
 
-echo "=========== mvn package ===========" >> $1
-mvn -U clean package >> $1
+cd ${dspace_src}/dspace/target/dspace*/ >> $log
 
-cd ${dspace_src}/dspace/target/dspace*/ >> $1
-ls
-echo "=========== ant update ===========" >> $1
-ant update >> $1
+echo "=========== ant update ===========" >> $log
+ant update >> $log
 
