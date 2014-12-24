@@ -25,7 +25,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
   
 <%@ page import="java.util.List" %>
-<ol class="breadcrumb btn-success">
+
+<p class="locationBar">
 <%
     List parentTitles = (List) request.getAttribute("dspace.layout.parenttitles");
     List parentLinks = (List) request.getAttribute("dspace.layout.parentlinks");
@@ -35,26 +36,24 @@
         String s = (String) parentTitles.get(i);
         String u = (String) parentLinks.get(i);
 
+        // New line for each breadcrumb (no <br> needed for first)
+        if (i > 0)
+        {
+%><br/><%
+        }
+
         if (u.equals(""))
         {
-            if (i == parentTitles.size())
-            {
 %>
-<li class="active"><%= s %></li>
-<%           
-            }
-            else
-            {
-%>
-<li><%= s %></li>
-<%			}
+<%= s %>&nbsp;&gt;
+<%
         }
         else
         {
 %>
-  <li><a href="<%= request.getContextPath() %><%= u %>"><%= s %></a></li>
+<a href="<%= request.getContextPath() %><%= u %>"><%= s %></a>&nbsp;&gt;
 <%
         }
 }
 %>
-</ol>
+</p>

@@ -445,6 +445,8 @@ function sortBy(idx, ord)
 
 	</form>
 	</div>
+
+  <%--  table starts from here --%>
 <div class="panel panel-primary">
 	<%-- give us the top report on what we are looking at --%>
 	<div class="panel-heading text-center">

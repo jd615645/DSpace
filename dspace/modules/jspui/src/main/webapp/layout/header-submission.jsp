@@ -125,6 +125,9 @@
   <script src="<%= request.getContextPath() %>/static/js/html5shiv.js"></script>
   <script src="<%= request.getContextPath() %>/static/js/respond.min.js"></script>
 <![endif]-->
+
+      <link rel="stylesheet" href="/css/sliding_footer.css" type="text/css">
+      <script type="text/javascript" src="/js/sliding_footer.js"></script>
     </head>
 
     <%-- HACK: leftmargin, topmargin: for non-CSS compliant Microsoft IE browser --%>
@@ -153,6 +156,17 @@
 </header>
 
 <main id="content" role="main">
+<div class="container banner">
+    <div class="row">
+        <div class="col-md-9 brand">
+        <h1><fmt:message key="jsp.layout.header-default.brand.heading" /></h1>
+        <fmt:message key="jsp.layout.header-default.brand.description" /> 
+        </div>
+        <div class="col-md-3"><img class="pull-right" src="<%= request.getContextPath() %>/image/logo.gif">
+        </div>
+    </div>
+</div>  
+<br/>
                 <%-- Location bar --%>
 <%
     if (locbar)
@@ -168,7 +182,13 @@
 
         <%-- Page contents --%>
 <div class="container">
+  <div class="row">
+    <div class="col-md-2 hidden-xs hidden-sm">
+      <dspace:include page="/layout/sidebar.jsp" />
+    </div>
 <% if (request.getAttribute("dspace.layout.sidebar") != null) { %>
-	<div class="row">
-		<div class="col-md-9">
-<% } %>		
+        <div class="col-md-8">
+<% } %>     
+<% if (request.getAttribute("dspace.layout.sidebar") == null) { %>
+        <div class="col-md-10">
+<% } %>     

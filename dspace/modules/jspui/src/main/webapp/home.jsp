@@ -83,6 +83,8 @@ for (int i = supportedLocales.length-1; i >= 0; i--)
        <%= topNews %>
 	</div>
 
+
+<%--
 <div class="row">
 <%
 if (submissions != null && submissions.count() > 0)
@@ -177,8 +179,10 @@ if (submissions != null && submissions.count() > 0)
 <div class="col-md-12">
     <%= sideNews %>
 </div>
-</div>
-<div class="container row">
+</div>--%>
+
+
+<div class="row">
 <%
 if (communities != null && communities.length != 0)
 {

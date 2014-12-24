@@ -233,7 +233,7 @@
 	</form>
 	</div>
 
-<div class="row col-md-offset-3 col-md-6">
+<div class="row col-md-offset-2 col-md-8">
 	<%-- give us the top report on what we are looking at --%>
 	<div class="panel panel-primary">
 	<div class="panel-heading text-center">
