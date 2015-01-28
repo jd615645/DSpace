@@ -1,8 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <div class="panel panel-default">
         <!-- Default panel contents -->
-        <div class="panel-heading">瀏覽全部</div>
+        <div class="panel-heading"><fmt:message key="browse.sidebar.all"/></div>
 
         <!-- List group -->
         <ul class="list-group">
@@ -10,12 +11,12 @@
             <a href="/about/journals.jsp">校內出版品</a>
           </li>
           <li class="list-group-item">
-            <a href="/community-list">社群與類別</a>
+            <a href="/community-list"><fmt:message key="jsp.community-list.title"/></a>
           </li>
         </ul>
       </div>
       <div class="panel panel-default">
-        <div class="panel-heading">學術資源</div>
+        <div class="panel-heading"><fmt:message key="browse.sidebar.resource"/></div>
         <ul class="list-group">
           <li class="list-group-item">
             <a href="http://www.ndltd.org/" target="_blank">NDLTD</a>
@@ -36,7 +37,7 @@
       </div>
       <div class="panel panel-default">
         <!-- Default panel contents -->
-        <div class="panel-heading">相關連結</div>
+        <div class="panel-heading"><fmt:message key="browse.sidebar.all"/></div>
         <!-- List group -->
         <ul class="list-group">
           <li class="list-group-item">

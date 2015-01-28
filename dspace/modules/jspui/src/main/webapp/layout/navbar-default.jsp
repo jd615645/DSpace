@@ -29,6 +29,18 @@
 <%@ page import="org.dspace.browse.BrowseIndex" %>
 <%@ page import="org.dspace.browse.BrowseInfo" %>
 <%@ page import="java.util.Map" %>
+
+
+<%@ page import="java.io.File" %>
+<%@ page import="java.util.Enumeration"%>
+<%@ page import="java.util.Locale"%>
+<%@ page import="javax.servlet.jsp.jstl.core.*" %>
+<%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
+<%@ page import="org.dspace.core.I18nUtil" %>
+<%@ page import="org.dspace.app.webui.util.UIUtil" %>
+<%@ page import="org.dspace.browse.ItemCounter" %>
+<%@ page import="org.dspace.content.DCValue" %>
+<%@ page import="org.dspace.content.Item" %>
 <%
     // Is anyone logged in?
     EPerson user = (EPerson) request.getAttribute("dspace.current.user");
@@ -71,6 +83,16 @@
     }
     
     String extraNavbarData = (String)request.getAttribute("dspace.cris.navbar");
+
+    //language
+    Locale[] supportedLocales = I18nUtil.getSupportedLocales();
+
+    boolean feedEnabled = ConfigurationManager.getBooleanProperty("webui.feed.enable");
+    String feedData = "NONE";
+    if (feedEnabled)
+    {
+        feedData = "ALL:" + ConfigurationManager.getProperty("webui.feed.formats");
+    }
 %>
 
 
@@ -155,6 +177,42 @@
           <% } %>
         </ul>
       </li>
+      <li class="dropdown">
+        
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <fmt:message key="jsp.layout.navbar-default.language"/>  <b class="caret"></b></a>
+        
+        <ul class="dropdown-menu">
+          <li>
+            <a class="langChangeOn" id="zh_TW" href="#">中文</a>
+          </li>
+          <li>
+            <a class="langChangeOn" id="en" href="#">English</a>
+          </li>
+      <%--
+          <% if (supportedLocales != null && supportedLocales.length > 1)
+          {
+          %>
+                  <form method="get" name="repost" action="">
+                    <input type ="hidden" name ="locale"/>
+                  </form>
+          <%
+          for (int i = supportedLocales.length-1; i >= 0; i--)
+          {
+          %>
+              <li>
+                  <a class ="langChangeOn"
+                            onclick="javascript:document.repost.locale.value='<%=supportedLocales[i].toString()%>';
+                            document.repost.submit();">
+                           <%= supportedLocales[i].getDisplayLanguage(supportedLocales[i])%>
+                  </a></li>
+          <%
+          }
+          }
+          %>
+      --%>
+          
+        </ul>
+      </li>
     </ul>
           
     <%-- Search Box --%>
@@ -174,3 +232,5 @@
     %> --%>
     </form>
 </nav>
+
+
