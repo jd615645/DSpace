@@ -270,7 +270,7 @@
 				<ref bean="searchFilterIssued" />
 				<ref bean="searchFilterObjectType" />
 				<ref bean="searchFilterObjectPeople" />
-				<ref bean="searchFilterObjectOU" />
+			<!--	<ref bean="searchFilterObjectOU" />-->
 			</list>
 		</property>
 		<!--The search filters which can be used on the discovery search page -->
@@ -867,9 +867,10 @@
 
 	<bean id="searchFilterObjectType"
 		class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
-		<property name="indexFieldName" value="resourcetype" />
+		<property name="indexFieldName" value="type" />
 		<property name="metadataFields">
 			<list>
+				<value>dc.type</value>
 				<value>placeholder.placeholder.placeholder</value>
 			</list>
 		</property>
@@ -915,7 +916,7 @@
 		<property name="indexFieldName" value="dateIssued" />
 		<property name="metadataFields">
 			<list>
-				<value>dc.date.issued</value>
+				<value>dc.date</value>
 			</list>
 		</property>
 		<property name="type" value="date" />
@@ -1074,7 +1075,7 @@
 
 	<bean id="sortDateIssued"
 		class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
-		<property name="metadataField" value="dc.date.issued" />
+		<property name="metadataField" value="dc.date" />
 		<property name="type" value="date" />
 	</bean>
 
