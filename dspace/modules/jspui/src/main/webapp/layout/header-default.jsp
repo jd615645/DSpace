@@ -129,11 +129,8 @@
   <script src="<%= request.getContextPath() %>/static/js/html5shiv.js"></script>
   <script src="<%= request.getContextPath() %>/static/js/respond.min.js"></script>
 <![endif]-->
-  <script type="text/javascript" src="jquery.js"></script>
-
-
-      <link rel="stylesheet" href="/css/sliding_footer.css" type="text/css">
-      <script type="text/javascript" src="/js/sliding_footer.js"></script>
+      <link rel="stylesheet" href="<%=request.getContextPath()%>/css/sliding_footer.css" type="text/css">
+      <script type="text/javascript" src="<%=request.getContextPath()%>/js/sliding_footer.js"></script>
     </head>
 
     <%-- HACK: leftmargin, topmargin: for non-CSS compliant Microsoft IE browser --%>

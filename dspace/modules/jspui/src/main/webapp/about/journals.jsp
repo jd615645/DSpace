@@ -41,11 +41,8 @@
 </div>
 <script language="JavaScript" src="<%=request.getContextPath()%>/jscript/ajax.js" ></script>
 <script language="JavaScript">
-//var http_request = null;
-//var url = "<%=request.getContextPath()%>/intro/about.htm";
-//makeRequest(url, http_request, "contact");
-
-	var frontCoverNotFoundSrc='/image/journals/coverNotFound.jpg';
+	var url_base = "<%=request.getContextPath()%>";
+	var frontCoverNotFoundSrc= '/image/journals/coverNotFound.jpg';
 	var journal=[
 		{
 			name:'興大工程學刊',
@@ -327,13 +324,13 @@
 			aJournal=$('<div></div>');
 			aJournal.addClass('aJournal');
 			if((journal[i].frontCoverSrc.length==0)&&(typeof(journal[i].frontCoverSrc)=='string')){
-				aJournal.append($('<img/>').attr('src',frontCoverNotFoundSrc));
+				aJournal.append($('<img/>').attr('src',url_base + frontCoverNotFoundSrc));
 			}
 			else
-				aJournal.append('<img src="'+journal[i].frontCoverSrc+'"/>');
+				aJournal.append('<img src="'+url_base+journal[i].frontCoverSrc+'"/>');
 			aJournal.append('<h3>'+journal[i].name+'</h3>');
 			aJournal.append('<p>'+journal[i].description+'</p>');
-			aJournal=$('<a href="'+journal[i].href+'"></a>').prepend(aJournal);
+			aJournal=$('<a href="'+url_base+journal[i].href+'"></a>').prepend(aJournal);
 
 			try{
 				isNew=true;

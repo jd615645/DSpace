@@ -8,10 +8,10 @@
         <!-- List group -->
         <ul class="list-group">
           <li class="list-group-item">
-            <a href="/about/journals.jsp">校內出版品</a>
+            <a href="<%=request.getContextPath()%>/about/journals.jsp">校內出版品</a>
           </li>
           <li class="list-group-item">
-            <a href="/community-list"><fmt:message key="jsp.community-list.title"/></a>
+            <a href="<%=request.getContextPath()%>/community-list"><fmt:message key="jsp.community-list.title"/></a>
           </li>
         </ul>
       </div>
@@ -41,7 +41,7 @@
         <!-- List group -->
         <ul class="list-group">
           <li class="list-group-item">
-            <a href="/copyright.jsp">著作權相關文件</a>
+            <a href="<%=request.getContextPath()%>/copyright.jsp">著作權相關文件</a>
           </li>
           <li class="list-group-item">
             <a href="http://tair.org.tw/" target="_blank">臺灣學術機構典藏</a>
