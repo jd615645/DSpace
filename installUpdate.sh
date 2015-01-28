@@ -24,7 +24,7 @@ esac
 cd $dspace_src
 
 echo "=========== mvn package ===========" | tee $log
-# mvn -U clean package | tee $log
+mvn -U clean package | tee $log
 if [[ $? -ne 0 ]]; then
 	echo "mvn failed!" | tee $log
 fi;
