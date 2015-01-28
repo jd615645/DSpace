@@ -182,6 +182,13 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <fmt:message key="jsp.layout.navbar-default.language"/>  <b class="caret"></b></a>
         
         <ul class="dropdown-menu">
+          <li>
+            <a class="langChangeOn" id="zh_TW" href="#">中文</a>
+          </li>
+          <li>
+            <a class="langChangeOn" id="en" href="#">English</a>
+          </li>
+      <%--
           <% if (supportedLocales != null && supportedLocales.length > 1)
           {
           %>
@@ -202,6 +209,7 @@
           }
           }
           %>
+      --%>
           
         </ul>
       </li>
@@ -224,3 +232,5 @@
     %> --%>
     </form>
 </nav>
+
+
