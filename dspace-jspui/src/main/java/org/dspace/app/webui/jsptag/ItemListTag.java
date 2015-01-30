@@ -535,13 +535,14 @@ public class ItemListTag extends TagSupport {
                         }
                     }
                             
-					String metadata = "";
+					String metadata;
 					try {
 						metadata = strategy.getMetadataDisplay(hrq, limit,
 								viewFull[colIdx], browseType[colIdx], colIdx,
 								field, metadataArray, items[i],
 								disableCrossLinks, emph[colIdx], pageContext);
 					} catch (Exception e) {
+					    metadata = LocaleSupport.getLocalizedMessage(pageContext,"jsp.tools.lookup.fail");
 						log.error("Error getMetadataDisplay on "
 								+ items[i].getHandle());
 					}

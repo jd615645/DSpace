@@ -42,7 +42,7 @@ import org.dspace.sort.SortOption;
 
 /**
  * Tag for display a list of items
- * 
+ *
  * @author Robert Tansley
  * @version $Revision$
  */
@@ -166,7 +166,7 @@ public class BrowseListTag extends TagSupport
         /*
          * just leave this out now boolean emphasiseDate = false; boolean
          * emphasiseTitle = false;
-         * 
+         *
          * if (emphColumn != null) { emphasiseDate =
          * emphColumn.equalsIgnoreCase("date"); emphasiseTitle =
          * emphColumn.equalsIgnoreCase("title"); }
@@ -359,6 +359,7 @@ public class BrowseListTag extends TagSupport
         boolean viewFull[] = new boolean[fieldArr.length];
         String[] browseType = new String[fieldArr.length];
         String[] cOddOrEven = new String[fieldArr.length];
+        Boolean hasBitstream = false;
 
         try
         {
@@ -437,7 +438,12 @@ public class BrowseListTag extends TagSupport
                 String style = null;
 
                 // backward compatibility, special fields
-                if (field.equals("thumbnail"))
+                if (field.equals("bitstream"))
+                {
+                    style = "bitstream";
+                    hasBitstream = true;
+                }
+                else if (field.equals("thumbnail"))
                 {
                     style = "thumbnail";
                 }
@@ -585,6 +591,11 @@ public class BrowseListTag extends TagSupport
 
             out.print("</tr>");
 
+            // Bitstream[] bitstream;
+            // if(hasBitstream){
+            //     bitstream = Item.toBitstreamList()
+            // }
+
             // now output each item row
             for (int i = 0; i < items.length; i++)
             {
@@ -686,10 +697,17 @@ public class BrowseListTag extends TagSupport
                         }
                     }
 
-                    String metadata = strategy.getMetadataDisplay(hrq, limit,
-                            viewFull[colIdx], browseType[colIdx], colIdx,
-                            field, metadataArray, items[i], disableCrossLinks,
-                            emph[colIdx], pageContext);
+                    String metadata;
+                    try{
+                        metadata = strategy.getMetadataDisplay(hrq, limit,
+                                viewFull[colIdx], browseType[colIdx], colIdx,
+                                field, metadataArray, items[i], disableCrossLinks,
+                                emph[colIdx], pageContext);
+                    }catch(Exception e){
+                        metadata = LocaleSupport.getLocalizedMessage(pageContext,"jsp.tools.lookup.fail");
+                        log.error("Error getMetadataDisplay on "
+                                + items[i].getHandle());
+                    }
 
                     // prepare extra special layout requirements for dates
                     String extras = strategy.getExtraCssDisplay(hrq, limit,
@@ -782,7 +800,7 @@ public class BrowseListTag extends TagSupport
 
     /**
      * Get the items to list
-     * 
+     *
      * @return the items
      */
     public BrowseItem[] getItems()
@@ -792,7 +810,7 @@ public class BrowseListTag extends TagSupport
 
     /**
      * Set the items to list
-     * 
+     *
      * @param itemsIn
      *            the items
      */
@@ -803,7 +821,7 @@ public class BrowseListTag extends TagSupport
 
     /**
      * Get the row to highlight - null or -1 for no row
-     * 
+     *
      * @return the row to highlight
      */
     public String getHighlightrow()
@@ -813,7 +831,7 @@ public class BrowseListTag extends TagSupport
 
     /**
      * Set the row to highlight
-     * 
+     *
      * @param highlightRowIn
      *            the row to highlight or -1 for no highlight
      */
@@ -838,7 +856,7 @@ public class BrowseListTag extends TagSupport
 
     /**
      * Get the column to emphasise - "title", "date" or null
-     * 
+     *
      * @return the column to emphasise
      */
     public String getEmphcolumn()
@@ -848,7 +866,7 @@ public class BrowseListTag extends TagSupport
 
     /**
      * Set the column to emphasise - "title", "date" or null
-     * 
+     *
      * @param emphColumnIn
      *            column to emphasise
      */
