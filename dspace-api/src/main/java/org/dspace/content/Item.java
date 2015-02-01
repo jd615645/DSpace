@@ -2871,6 +2871,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
 
     public static Bitstream[] toBitstreamList(Item[] items,String bundle_name){
         Bitstream[] bit_list = new Bitstream[items.length];
+        TableRowIterator tri;
         try{
             /* Build a query like this:
             SELECT DISTINCT ON (a.item_id) e.*
@@ -2900,7 +2901,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
             query.append("' LEFT JOIN bundle2bitstream AS d ON c.bundle_id = d.bundle_id LEFT JOIN bitstream AS e ON d.bitstream_id = e.bitstream_id;");
             String query_str = query.toString();
             log.debug("Using '" + query_str + "' to for items to BitstreamList");
-            TableRowIterator tri = DatabaseManager.query(theContext,query.toString());
+            tri = DatabaseManager.query(theContext,query.toString());
 
             if(!tri.hasNext())
                 log.warn("There is an empty response from db when query items to BitstreamList");
@@ -2913,10 +2914,10 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
                     r = tri.next();
                     bitstream_id = r.getIntColumn("bitstream_id");
 
-                    if(bitstream_id == null)
+                    if(bitstream_id == -1)
                         continue;
                     // First check the cache
-                    fromCache = (Bitstream) context.fromCache(
+                    fromCache = (Bitstream) theContext.fromCache(
                             Bitstream.class, r.getIntColumn("bitstream_id"));
                     if (fromCache != null){
                         bit_list[i] = fromCache;
