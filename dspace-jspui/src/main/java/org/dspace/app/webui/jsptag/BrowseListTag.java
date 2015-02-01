@@ -28,6 +28,7 @@ import org.dspace.app.webui.util.IDisplayMetadataValueStrategy;
 import org.dspace.app.webui.util.LinkDisplayStrategy;
 import org.dspace.app.webui.util.ThumbDisplayStrategy;
 import org.dspace.app.webui.util.TitleDisplayStrategy;
+import org.dspace.app.webui.util.BitstreamDisplayStrategy;
 import org.dspace.browse.BrowseException;
 import org.dspace.browse.BrowseIndex;
 import org.dspace.browse.BrowseInfo;
@@ -438,12 +439,7 @@ public class BrowseListTag extends TagSupport
                 String style = null;
 
                 // backward compatibility, special fields
-                if (field.equals("bitstream"))
-                {
-                    style = "bitstream";
-                    hasBitstream = true;
-                }
-                else if (field.equals("thumbnail"))
+                if (field.equals("thumbnail"))
                 {
                     style = "thumbnail";
                 }
@@ -454,6 +450,11 @@ public class BrowseListTag extends TagSupport
                 else if (field.equals(dateField))
                 {
                     style = "date";
+                }
+                else if (field.equals("bitstream"))
+                {
+                    style = "bitstream";
+                    hasBitstream = true;
                 }
 
                 Matcher fieldStyleMatcher = fieldStylePatter.matcher(field);
@@ -591,10 +592,8 @@ public class BrowseListTag extends TagSupport
 
             out.print("</tr>");
 
-            // Bitstream[] bitstream;
-            // if(hasBitstream){
-            //     bitstream = Item.toBitstreamList()
-            // }
+            if(hasBitstream)
+                hrq.setAttribute("itemlist.bitstream", Item.toBitstreamList(items));
 
             // now output each item row
             for (int i = 0; i < items.length; i++)
@@ -690,6 +689,10 @@ public class BrowseListTag extends TagSupport
                         else if (useRender[colIdx].equalsIgnoreCase("link"))
                         {
                             strategy = new LinkDisplayStrategy();
+                        }
+                        else if (useRender[colIdx].equalsIgnoreCase("bitstream"))
+                        {
+                            strategy = new BitstreamDisplayStrategy();
                         }
                         else
                         {

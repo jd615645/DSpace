@@ -101,13 +101,13 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
      */
     private boolean modified;
 
-    
+
     /**
      * Empty constructor to allow Item proxing
      */
     protected Item()
     {
-        
+
     }
     /**
      * Construct an item with the given table row
@@ -244,15 +244,15 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
      * @return an iterator over the items in the archive.
      * @throws SQLException
      */
-	public static ItemIterator findAllUnfiltered(Context context) throws SQLException
+    public static ItemIterator findAllUnfiltered(Context context) throws SQLException
     {
         String myQuery = "SELECT * FROM item WHERE in_archive='1' or withdrawn='1'";
 
         TableRowIterator rows = DatabaseManager.queryTable(context, "item", myQuery);
 
         return new ItemIterator(context, rows);
-	}
-	
+    }
+
     /**
      * Find all the items in the archive by a given submitter. The order is
      * indeterminate. Only items with the "in archive" flag set are included.
@@ -550,7 +550,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
 
         return valueArray;
     }
-    
+
     /**
      * Retrieve metadata field values from a given metadata string
      * of the form <schema prefix>.<element>[.<qualifier>|.*]
@@ -562,7 +562,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
     public DCValue[] getMetadata(String mdString)
     {
         StringTokenizer dcf = new StringTokenizer(mdString, ".");
-        
+
         String[] tokens = { "", "", "" };
         int i = 0;
         while(dcf.hasMoreTokens())
@@ -573,7 +573,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
         String schema = tokens[0];
         String element = tokens[1];
         String qualifier = tokens[2];
-        
+
         DCValue[] values;
         if ("*".equals(qualifier))
         {
@@ -587,7 +587,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
         {
             values = getMetadata(schema, element, qualifier, Item.ANY);
         }
-        
+
         return values;
     }
 
@@ -637,7 +637,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
     {
         addMetadata(MetadataSchema.DC_SCHEMA, element, qualifier, lang, value);
     }
-    
+
     /**
      * Add metadata fields. These are appended to existing values.
      * Use <code>clearDC</code> to remove values. The ordering of values
@@ -711,7 +711,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
             String[] values, String authorities[], int confidences[])
     {
         List<DCValue> dublinCore = getMetadata();
-        MetadataAuthorityManager mam = MetadataAuthorityManager.getManager();        
+        MetadataAuthorityManager mam = MetadataAuthorityManager.getManager();
         boolean authorityControlled = mam.isAuthorityControlled(schema, element, qualifier);
         boolean authorityRequired = mam.isAuthorityRequired(schema, element, qualifier);
         String fieldName = schema+"."+element+((qualifier==null)? "": "."+qualifier);
@@ -1204,7 +1204,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
                 }
             }
         }
-        
+
         Bundle[] bundleArray = new Bundle[bundles.size()];
         bundleArray = (Bundle[]) bundles.toArray(bundleArray);
 
@@ -1332,7 +1332,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
 
         // Remove from internal list of bundles
         Bundle[] bunds = getBundles();
-        
+
         for (int i = 0; i < bunds.length; i++)
         {
             if (b.getID() == bunds[i].getID())
@@ -1798,7 +1798,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
             {
                 itemRow.setColumn("withdrawn", false);
             }
-            
+
             if (itemRow.isColumnNull("discoverable"))
             {
                 itemRow.setColumn("discoverable", false);
@@ -1945,7 +1945,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
         {
             prov.append(colls[i].getMetadata("name")).append(" (ID: ").append(colls[i].getID()).append(")\n");
         }
-        
+
         // Clear withdrawn flag
         itemRow.setColumn("withdrawn", false);
 
@@ -2041,10 +2041,10 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
 
         // remove all of our authorization policies
         AuthorizeManager.removeAllPolicies(ourContext, this);
-        
+
         // Remove any Handle
         HandleManager.unbindHandle(ourContext, this);
-        
+
         // remove version attached to the item
         removeVersion();
 
@@ -2052,7 +2052,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
         // Finally remove item row
         DatabaseManager.delete(ourContext, itemRow);
     }
-    
+
     private void removeVersion() throws AuthorizeException, SQLException
     {
         VersioningService versioningService = new DSpace().getSingletonService(VersioningService.class);
@@ -2379,7 +2379,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
         {
             AuthorizeManager.authorizeAction(ourContext, this, Constants.WRITE);
         }
-        
+
         // Move the Item from one Collection to the other
         to.addItem(this);
         from.removeItem(this);
@@ -2415,11 +2415,11 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
 
             // Note that updating the owning collection above will have the same effect,
             // so we only do this here if the owning collection hasn't changed.
-            
+
             ourContext.addEvent(new Event(Event.MODIFY, Constants.ITEM, getID(), null));
         }
     }
-    
+
     /**
      * Check the bundle ORIGINAL to see if there are any uploaded files
      *
@@ -2447,7 +2447,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
         }
         return true;
     }
-    
+
     /**
      * Get the collections this item is not in.
      *
@@ -2464,13 +2464,13 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
         {
                 return notLinkedCollections;
         }
-        
+
         int i = 0;
-                 
+
         for (Collection collection : allCollections)
         {
                  boolean alreadyLinked = false;
-                         
+
                  for (Collection linkedCommunity : linkedCollections)
                  {
                          if (collection.getID() == linkedCommunity.getID())
@@ -2479,13 +2479,13 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
                                  break;
                          }
                  }
-                         
+
                  if (!alreadyLinked)
                  {
                          notLinkedCollections[i++] = collection;
                  }
         }
-        
+
         return notLinkedCollections;
     }
 
@@ -2518,13 +2518,13 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
 
         return false;
     }
-    
+
     public String getName()
     {
         DCValue t[] = getMetadata("dc", "title", null, Item.ANY);
         return (t.length >= 1) ? t[0].value : null;
     }
-        
+
     /**
      * Returns an iterator of Items possessing the passed metadata field, or only
      * those matching the passed value, if value is not Item.ANY
@@ -2553,7 +2553,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
             throw new IllegalArgumentException(
                     "No such metadata field: schema=" + schema + ", element=" + element + ", qualifier=" + qualifier);
         }
-        
+
         String query = "SELECT item.* FROM metadatavalue,item WHERE item.in_archive='1' "+
                        "AND item.item_id = metadatavalue.item_id AND metadata_field_id = ?";
         TableRowIterator rows = null;
@@ -2568,7 +2568,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
         }
         return new ItemIterator(context, rows);
      }
-    
+
     public DSpaceObject getAdminObject(int action) throws SQLException
     {
         DSpaceObject adminObject = null;
@@ -2598,7 +2598,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
                 }
             }
         }
-        
+
         switch (action)
         {
             case Constants.ADD:
@@ -2682,7 +2682,7 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
             }
         return adminObject;
     }
-    
+
     public DSpaceObject getParentObject() throws SQLException
     {
         Collection ownCollection = getOwningCollection();
@@ -2845,15 +2845,97 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
             return null;
         }
     }
-    
+
     public String getTypeText() {
         return Constants.typeText[Constants.ITEM];
     }
 
-	public Item getWrapper() {
+    public Item getWrapper() {
         DSpace dspace = new DSpace();
-		ItemWrapperIntegration wrapperService = (ItemWrapperIntegration) dspace
-				.getSingletonService(ItemWrapperIntegration.class);
-        return wrapperService.getWrapper(this);    
+        ItemWrapperIntegration wrapperService = (ItemWrapperIntegration) dspace
+                .getSingletonService(ItemWrapperIntegration.class);
+        return wrapperService.getWrapper(this);
+    }
+
+    /* Get the first bitstream of every item in the array, null is given if not found
+    *  index | parameter item | returned bitstream
+    *  ------+----------------+---------------------
+    *  0     | item_a_has_bs  | first_bs_of_item_a
+    *  1     | item_b_no_bs   | null
+    *  2     | item_c_has_bs  | first_bs_of_item_c
+    * ...
+    */
+    public static Bitstream[] toBitstreamList(Item[] items){
+        return toBitstreamList(items,"ORIGINAL");
+    }
+
+    public static Bitstream[] toBitstreamList(Item[] items,String bundle_name){
+        Bitstream[] bit_list = new Bitstream[items.length];
+        try{
+            /* Build a query like this:
+            SELECT DISTINCT ON (a.item_id) e.*
+            FROM (VALUES (63026),(62851),(82244),(66952),(62944),(83384)) AS a (item_id)
+            LEFT JOIN item2bundle AS b ON a.item_id = b.item_id
+            LEFT JOIN bundle AS c ON b.bundle_id = c.bundle_id AND c.name = 'ORIGINAL'
+            LEFT JOIN bundle2bitstream AS d ON c.bundle_id = d.bundle_id
+            LEFT JOIN bitstream AS e ON d.bitstream_id = e.bitstream_id;
+            */
+
+            if(items.length == 0)
+                return bit_list;
+            Context theContext = items[0].ourContext; // items should has at least one element.
+
+            StringBuilder query = new StringBuilder();
+            int lastItemIndex = items.length - 1;
+            query.append("SELECT DISTINCT ON (a.item_id) e.* FROM (VALUES ");
+            for (int i = 0 ; i < lastItemIndex ; i++) {
+                query.append("(");
+                query.append(items[i].getID());
+                query.append("),");
+            }
+            query.append("(");
+            query.append(items[lastItemIndex].getID());
+            query.append(")) AS a (item_id) LEFT JOIN item2bundle AS b ON a.item_id = b.item_id LEFT JOIN bundle AS c ON b.bundle_id = c.bundle_id AND c.name = '");
+            query.append(bundle_name);
+            query.append("' LEFT JOIN bundle2bitstream AS d ON c.bundle_id = d.bundle_id LEFT JOIN bitstream AS e ON d.bitstream_id = e.bitstream_id;");
+            String query_str = query.toString();
+            log.debug("Using '" + query_str + "' to for items to BitstreamList");
+            TableRowIterator tri = DatabaseManager.query(theContext,query.toString());
+
+            if(!tri.hasNext())
+                log.warn("There is an empty response from db when query items to BitstreamList");
+
+            TableRow r;
+            Bitstream fromCache;
+            int bitstream_id;
+            for (int i = 0 ; i <= lastItemIndex && tri.hasNext() ; i++) {
+                try{
+                    r = tri.next();
+                    bitstream_id = r.getIntColumn("bitstream_id");
+
+                    if(bitstream_id == null)
+                        continue;
+                    // First check the cache
+                    fromCache = (Bitstream) context.fromCache(
+                            Bitstream.class, r.getIntColumn("bitstream_id"));
+                    if (fromCache != null){
+                        bit_list[i] = fromCache;
+                        fromCache = null;
+                    }
+                    else{
+                        r.setTable("bitstream");
+                        bit_list[i] = new Bitstream(theContext, r);
+                    }
+                }catch(Exception e){
+                    log.error("Error on item to bitstreamList iteration: " + e.getMessage());
+                }
+            }
+        }catch(Exception e){
+            log.error("Error on item to bitstreamList: " + e.getMessage());
+        }
+        // close the TableRowIterator to free up resources
+        if (tri != null)
+            tri.close();
+        return bit_list;
     }
 }

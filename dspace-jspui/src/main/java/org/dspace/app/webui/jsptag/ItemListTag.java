@@ -28,6 +28,7 @@ import org.dspace.app.webui.util.LinkDisplayStrategy;
 import org.dspace.app.webui.util.ResolverDisplayStrategy;
 import org.dspace.app.webui.util.ThumbDisplayStrategy;
 import org.dspace.app.webui.util.TitleDisplayStrategy;
+import org.dspace.app.webui.util.BitstreamDisplayStrategy;
 import org.dspace.browse.BrowseException;
 import org.dspace.browse.BrowseIndex;
 import org.dspace.browse.CrossLinks;
@@ -96,13 +97,13 @@ public class ItemListTag extends TagSupport {
     private static String authorField = "dc.contributor.*";
 
     private int authorLimit = -1;
-    
+
 
 	/**
 	 * regex pattern to capture the style of a field, ie
 	 * <code>schema.element.qualifier(style)</code>
 	 */
-    private Pattern fieldStylePatter = Pattern.compile(".*\\((.*)\\)");    
+    private Pattern fieldStylePatter = Pattern.compile(".*\\((.*)\\)");
 
     private transient SortOption sortOption = null;
 
@@ -116,10 +117,10 @@ public class ItemListTag extends TagSupport {
 
         showThumbs = ConfigurationManager
                 .getBooleanProperty("webui.browse.thumbnail.show");
-        
+
         thumbItemListMaxWidth = ConfigurationManager
                 .getIntProperty("webui.browse.thumbnail.maxwidth");
-        
+
 		if (showThumbs) {
             DEFAULT_LIST_FIELDS = "thumbnail, dc.date.issued(date), dc.title, dc.contributor.*";
             DEFAULT_LIST_WIDTHS = "*, 130, 60%, 40%";
@@ -257,6 +258,7 @@ public class ItemListTag extends TagSupport {
         boolean viewFull[] = new boolean[fieldArr.length];
         String[] browseType = new String[fieldArr.length];
         String[] cOddOrEven = new String[fieldArr.length];
+        Boolean hasBitstream = false;
 
 		try {
             // Get the interlinking configuration too
@@ -333,21 +335,24 @@ public class ItemListTag extends TagSupport {
                 cOddOrEven[colIdx] = (((colIdx + 1) % 2) == 0 ? "Odd" : "Even");
 
                 String style = null;
-                
+
                 // backward compatibility, special fields
-				if (field.equals("thumbnail")) {
+                if (field.equals("thumbnail")) {
                     style = "thumbnail";
 				} else if (field.equals(titleField)) {
                     style = "title";
 				} else if (field.equals(dateField)) {
                     style = "date";
+                } else if (field.equals("bitstream")) {
+                    style = "bitstream";
+                    hasBitstream = true;
                 }
-                
+
                 Matcher fieldStyleMatcher = fieldStylePatter.matcher(field);
 				if (fieldStyleMatcher.matches()) {
                     style = fieldStyleMatcher.group(1);
                 }
-                
+
 				if (style != null) {
 					field = field.replaceAll("\\(" + style + "\\)", "");
                     useRender[colIdx] = style;
@@ -384,7 +389,7 @@ public class ItemListTag extends TagSupport {
 
 				// String css = "oddRow" + cOddOrEven[colIdx] + "Col";
 				String css = "oddRow";
-				String csssort = ""; 
+				String csssort = "";
                 String message = "itemlist." + field;
 				String thJs = null;
 
@@ -400,7 +405,7 @@ public class ItemListTag extends TagSupport {
 								csssort += "fa fa-sort-asc pull-right";
 							} else {
 								thJs += " 'DESC'";
-								css += " sorted_asc";								
+								css += " sorted_asc";
 								csssort += "fa fa-sort-desc pull-right";
 							}
 						} else {
@@ -440,10 +445,13 @@ public class ItemListTag extends TagSupport {
 
             out.print("</tr>");
 
+            if(hasBitstream)
+                hrq.setAttribute("itemlist.bitstream", Item.toBitstreamList(items));
+
             // now output each item row
 			for (int i = 0; i < items.length; i++) {
                 // now prepare the XHTML frag for this division
-            	out.print("<tr>"); 
+            	out.print("<tr>");
                 String rOddOrEven;
 				if (i == highlightRow) {
                     rOddOrEven = "highlight";
@@ -508,12 +516,12 @@ public class ItemListTag extends TagSupport {
                         limit = (authorLimit <= 0 ? metadataArray.length
                                 : authorLimit);
                     }
-                    
+
                     IDisplayMetadataValueStrategy strategy = (IDisplayMetadataValueStrategy) PluginManager
                             .getNamedPlugin(
                                     IDisplayMetadataValueStrategy.class,
                                     useRender[colIdx]);
-                    
+
                     // fallback compatibility
 					if (strategy == null) {
 						if (useRender[colIdx].equalsIgnoreCase("title")) {
@@ -528,13 +536,15 @@ public class ItemListTag extends TagSupport {
 						} else if (useRender[colIdx]
 								.equalsIgnoreCase("default")) {
                             strategy = new DefaultDisplayStrategy();
+                        } else if (useRender[colIdx].equalsIgnoreCase("bitstream")) {
+                            strategy = new BitstreamDisplayStrategy();
 						} else {
 							// if the plugin instantiation fails try to use the
 							// resolver catch all strategy
 							strategy = new ResolverDisplayStrategy();
                         }
                     }
-                            
+
 					String metadata;
 					try {
 						metadata = strategy.getMetadataDisplay(hrq, limit,
