@@ -53,12 +53,13 @@
 			</div>
     </footer>
 <script type="text/javascript">
-    var loc=location.href+"?";
+    var loc="?";
     var str=location.href.split("?");
     if(str.length>1){
-        loc=str[0].split("&")[0]+"?";
+        //loc=str[0].split("&")[0]+"?";
         str=str[1].split('&');
         for(var i=0; i<str.length; i++){
+            if(str[i][str[i].length-1]=='#') str[i][str[i].length-1]='';
             if(!str[i].match('locale=') && str[i]!="")  loc+="&"+str[i];
         }
     }
