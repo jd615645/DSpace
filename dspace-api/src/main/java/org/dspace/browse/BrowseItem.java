@@ -27,11 +27,11 @@ import java.util.List;
  * metadata handling has been further optimised for performance in both
  * reading and writing, and it does not deal with other objects related to
  * items
- * 
+ *
  * FIXME: this class violates some of the encapsulation of the Item, but there is
- * unfortunately no way around this until DAOs and an interface are provided 
+ * unfortunately no way around this until DAOs and an interface are provided
  * for the Item class.
- * 
+ *
  * @author Richard Jones
  *
  */
@@ -39,13 +39,13 @@ public class BrowseItem extends DSpaceObject
 {
 	/** Logger */
     private static Logger log = Logger.getLogger(BrowseItem.class);
-    
+
     /** DSpace context */
 	private Context context;
-	
+
 	/** a List of all the metadata */
 	private List<DCValue> metadata = new ArrayList<DCValue>();
-	
+
 	/** database id of the item */
 	private int id = -1;
 
@@ -57,13 +57,13 @@ public class BrowseItem extends DSpaceObject
 
     /** is the item discoverable */
     private boolean discoverable = true;
-    
+
     /** item handle */
 	private String handle = null;
 
     /**
 	 * Construct a new browse item with the given context and the database id
-	 * 
+	 *
 	 * @param context	the DSpace context
      * @param id		the database id of the item
      * @param in_archive
@@ -80,7 +80,7 @@ public class BrowseItem extends DSpaceObject
 
 	/**
 	 * Get String array of metadata values matching the given parameters
-	 * 
+	 *
 	 * @param schema	metadata schema
 	 * @param element	metadata element
 	 * @param qualifier	metadata qualifier
@@ -149,11 +149,11 @@ public class BrowseItem extends DSpaceObject
             return null;
         }
     }
-	
+
 	/**
 	 * Get the type of object.  This object masquerades as an Item, so this
 	 * returns the value of Constants.ITEM
-	 * 
+	 *
 	 *@return Constants.ITEM
 	 */
 	public int getType()
@@ -176,10 +176,10 @@ public class BrowseItem extends DSpaceObject
 			return getType();
 		}
 	}
-	
+
 	/**
 	 * get the database id of the item
-	 * 
+	 *
 	 *	@return database id of item
 	 */
 	public int getID()
@@ -189,14 +189,14 @@ public class BrowseItem extends DSpaceObject
 
 	/**
 	 * Set the database id of the item
-	 * 
+	 *
 	 * @param id	the database id of the item
 	 */
 	public void setID(int id)
 	{
 		this.id = id;
 	}
-	
+
 	/**
      * Utility method for pattern-matching metadata elements.  This
      * method will return <code>true</code> if the given schema,
@@ -295,15 +295,15 @@ public class BrowseItem extends DSpaceObject
 		}
 		return this.handle;
 	}
-    
+
 	/**
 	 * Get a thumbnail object out of the item.
-	 * 
+	 *
 	 * Warning: using this method actually instantiates an Item, which has a
 	 * corresponding performance hit on the database during browse listing
 	 * rendering.  That's your own fault for wanting to put images on your
 	 * browse page!
-	 * 
+	 *
 	 * @throws SQLException
 	 */
     public Thumbnail getThumbnail()
@@ -311,21 +311,21 @@ public class BrowseItem extends DSpaceObject
     {
     	// instantiate an item for this one.  Not nice.
         Item item = Item.find(context, id);
-    	
+
     	if (item == null)
     	{
     		return null;
     	}
-    	
+
     	// now go sort out the thumbnail
-    	
+
     	// if there's no original, there is no thumbnail
     	Bundle[] original = item.getBundles("ORIGINAL");
         if (original.length == 0)
         {
         	return null;
         }
-        
+
         // if multiple bitstreams, check if the primary one is HTML
         boolean html = false;
         if (original[0].getBitstreams().length > 1)
@@ -343,14 +343,14 @@ public class BrowseItem extends DSpaceObject
 
         // now actually pull out the thumbnail (ouch!)
         Bundle[] thumbs = item.getBundles("THUMBNAIL");
-        
+
         // if there are thumbs and we're not dealing with an HTML item
         // then show the thumbnail
         if ((thumbs.length > 0) && !html)
         {
         	Bitstream thumbnailBitstream;
         	Bitstream originalBitstream;
-        	
+
         	if ((original[0].getBitstreams().length > 1) && (original[0].getPrimaryBitstreamID() > -1))
         	{
         		originalBitstream = Bitstream.find(context, original[0].getPrimaryBitstreamID());
@@ -361,7 +361,7 @@ public class BrowseItem extends DSpaceObject
         		originalBitstream = original[0].getBitstreams()[0];
         		thumbnailBitstream = thumbs[0].getBitstreams()[0];
         	}
-        	
+
         	if ((thumbnailBitstream != null)
         			&& (AuthorizeManager.authorizeActionBoolean(context, thumbnailBitstream, Constants.READ)))
         	{
@@ -408,12 +408,21 @@ public class BrowseItem extends DSpaceObject
     {
         return withdrawn;
     }
-    
+
     public boolean isDiscoverable() {
     	return discoverable;
 	}
-    
+
     public String getTypeText() {
         return Constants.typeText[Constants.ITEM];
     }
+
+	public static BitstreamList toBitstreamList(BrowseItem[] items){
+		if(items.length == 0) // items should has at least one element.
+			return new BitstreamList();
+		int[] item_ids = new int[items.length];
+		for (int i = 0; i < items.length ; i++)
+			item_ids[i] = items[i].getID();
+		return new BitstreamList(item_ids,"ORIGINAL",items[0].context);
+	}
 }

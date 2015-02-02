@@ -7,6 +7,7 @@
  */
 package org.dspace.content;
 
+import java.lang.StringBuilder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -27,6 +28,7 @@ import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
 import org.dspace.authorize.ResourcePolicy;
 import org.dspace.browse.BrowsableDSpaceObject;
+import org.dspace.browse.BrowseItem;
 import org.dspace.browse.BrowseException;
 import org.dspace.browse.IndexBrowse;
 import org.dspace.core.Constants;
@@ -35,6 +37,7 @@ import org.dspace.core.LogManager;
 import org.dspace.content.authority.Choices;
 import org.dspace.content.authority.ChoiceAuthorityManager;
 import org.dspace.content.authority.MetadataAuthorityManager;
+import org.dspace.content.BitstreamList;
 import org.dspace.event.Event;
 import org.dspace.eperson.EPerson;
 import org.dspace.eperson.Group;
@@ -2857,87 +2860,12 @@ public class Item extends DSpaceObject implements BrowsableDSpaceObject
         return wrapperService.getWrapper(this);
     }
 
-    /* Get the first bitstream of every item in the array, null is given if not found
-    *  index | parameter item | returned bitstream
-    *  ------+----------------+---------------------
-    *  0     | item_a_has_bs  | first_bs_of_item_a
-    *  1     | item_b_no_bs   | null
-    *  2     | item_c_has_bs  | first_bs_of_item_c
-    * ...
-    */
-    public static Bitstream[] toBitstreamList(Item[] items){
-        return toBitstreamList(items,"ORIGINAL");
-    }
-
-    public static Bitstream[] toBitstreamList(Item[] items,String bundle_name){
-        Bitstream[] bit_list = new Bitstream[items.length];
-        try{
-            /* Build a query like this:
-            SELECT DISTINCT ON (a.item_id) e.*
-            FROM (VALUES (63026),(62851),(82244),(66952),(62944),(83384)) AS a (item_id)
-            LEFT JOIN item2bundle AS b ON a.item_id = b.item_id
-            LEFT JOIN bundle AS c ON b.bundle_id = c.bundle_id AND c.name = 'ORIGINAL'
-            LEFT JOIN bundle2bitstream AS d ON c.bundle_id = d.bundle_id
-            LEFT JOIN bitstream AS e ON d.bitstream_id = e.bitstream_id;
-            */
-
-            if(items.length == 0)
-                return bit_list;
-            Context theContext = items[0].ourContext; // items should has at least one element.
-
-            StringBuilder query = new StringBuilder();
-            int lastItemIndex = items.length - 1;
-            query.append("SELECT DISTINCT ON (a.item_id) e.* FROM (VALUES ");
-            for (int i = 0 ; i < lastItemIndex ; i++) {
-                query.append("(");
-                query.append(items[i].getID());
-                query.append("),");
-            }
-            query.append("(");
-            query.append(items[lastItemIndex].getID());
-            query.append(")) AS a (item_id) LEFT JOIN item2bundle AS b ON a.item_id = b.item_id LEFT JOIN bundle AS c ON b.bundle_id = c.bundle_id AND c.name = '");
-            query.append(bundle_name);
-            query.append("' LEFT JOIN bundle2bitstream AS d ON c.bundle_id = d.bundle_id LEFT JOIN bitstream AS e ON d.bitstream_id = e.bitstream_id;");
-            String query_str = query.toString();
-            log.debug("Using '" + query_str + "' to for items to BitstreamList");
-            TableRowIterator tri = DatabaseManager.query(theContext,query.toString());
-
-            if(!tri.hasNext())
-                log.warn("There is an empty response from db when query items to BitstreamList");
-
-            TableRow r;
-            Bitstream fromCache;
-            int bitstream_id;
-            for (int i = 0 ; i <= lastItemIndex && tri.hasNext() ; i++) {
-                try{
-                    r = tri.next();
-                    bitstream_id = r.getIntColumn("bitstream_id");
-
-                    if(bitstream_id == -1)
-                        continue;
-                    // First check the cache
-                    fromCache = (Bitstream) theContext.fromCache(
-                            Bitstream.class, r.getIntColumn("bitstream_id"));
-                    if (fromCache != null){
-                        bit_list[i] = fromCache;
-                        fromCache = null;
-                    }
-                    else{
-                        r.setTable("bitstream");
-                        bit_list[i] = new Bitstream(theContext, r);
-                    }
-                }catch(Exception e){
-                    log.error("Error on item to bitstreamList iteration: " + e.getMessage());
-                }
-            }
-        }catch(Exception e){
-            log.error("Error on item to bitstreamList: " + e.getMessage());
-        }finally{
-            // close the TableRowIterator to free up resources
-            if (tri != null)
-                tri.close();
-        }
-
-        return bit_list;
+    public static BitstreamList toBitstreamList(Item[] items){
+        if(items.length == 0) // items should has at least one element.
+            return new BitstreamList();
+        int[] item_ids = new int[items.length];
+        for (int i = 0; i < items.length ; i++)
+            item_ids[i] = items[i].getID();
+        return new BitstreamList(item_ids,"ORIGINAL",items[0].ourContext);
     }
 }

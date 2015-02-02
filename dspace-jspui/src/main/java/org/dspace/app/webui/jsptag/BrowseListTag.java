@@ -36,6 +36,8 @@ import org.dspace.browse.BrowseItem;
 import org.dspace.browse.CrossLinks;
 import org.dspace.content.DCValue;
 import org.dspace.content.Item;
+import org.dspace.content.Bitstream;
+import org.dspace.content.BitstreamList;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.PluginManager;
 import org.dspace.sort.SortException;
@@ -592,8 +594,18 @@ public class BrowseListTag extends TagSupport
 
             out.print("</tr>");
 
-            if(hasBitstream)
-                hrq.setAttribute("itemlist.bitstream", Item.toBitstreamList(items));
+
+            if(hasBitstream){
+                BitstreamList bss = BrowseItem.toBitstreamList(items);
+                hrq.setAttribute("itemlist.bitstream", bss);
+
+                StringBuilder sb = new StringBuilder();
+                sb.append("itemlist (from browselist) bitstream length = ");
+                sb.append(bss.length);
+                sb.append(", tested length = ");
+                sb.append(((BitstreamList) hrq.getAttribute("itemlist.bitstream")).length);
+                log.debug(sb.toString());
+            }
 
             // now output each item row
             for (int i = 0; i < items.length; i++)

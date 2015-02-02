@@ -7,16 +7,20 @@
  */
 package org.dspace.app.webui.util;
 
+import java.lang.StringBuilder;
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.jstl.fmt.LocaleSupport;
 
+import org.apache.log4j.Logger;
 import org.dspace.browse.BrowseItem;
 import org.dspace.content.DCValue;
 import org.dspace.content.Item;
 import org.dspace.content.BitstreamFormat;
 import org.dspace.content.Bitstream;
+import org.dspace.content.BitstreamList;
 import org.dspace.core.SelfNamedPlugin;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
@@ -24,7 +28,10 @@ import org.dspace.core.Constants;
 public class BitstreamDisplayStrategy extends SelfNamedPlugin implements
         IDisplayMetadataValueStrategy
 {
-    Boolean showFullBitstream;
+    /** log4j category */
+    private static final Logger log = Logger.getLogger(BitstreamDisplayStrategy.class);
+
+    private static final boolean showFullBitstream;
     static
     {
         showFullBitstream = ConfigurationManager
@@ -36,13 +43,22 @@ public class BitstreamDisplayStrategy extends SelfNamedPlugin implements
             String field, DCValue[] metadataArray, boolean disableCrossLinks,
             boolean emph, PageContext pageContext) throws JspException
     {
-        Bitstream bs = (hrq.getAttribute("itemlist.bitstream"))[colIdx];
+        StringBuilder debugMsg = new StringBuilder();
+        BitstreamList bss = (BitstreamList) hrq.getAttribute("itemlist.bitstream");
+        debugMsg.append("Bitstream list using simple version ...\nitemlist.bitstream.length = ");
+        debugMsg.append(bss.length);
+        Bitstream bs = bss.getNextBS();
 
         if(bs != null){
             BitstreamFormat bsFormat = bs.getFormat();
             if((!bsFormat.isInternal()) || bsFormat.getMIMEType().equals("text/html"))
-                LocaleSupport.getLocalizedMessage(pageContext,"itemlist.bitstream.yes");
+                return LocaleSupport.getLocalizedMessage(pageContext,"itemlist.bitstream.yes");
+            debugMsg.append("\nbitstream " + bs.getName() + " not null but format " + bsFormat.getMIMEType() + " is internal or not equal to text/html\n");
         }
+        debugMsg.append("\nbitstream[");
+        debugMsg.append(bss.getCursor());
+        debugMsg.append("] is null");
+        log.debug(debugMsg.toString());
 
         return LocaleSupport.getLocalizedMessage(pageContext,"itemlist.bitstream.no");
     }
@@ -65,7 +81,11 @@ public class BitstreamDisplayStrategy extends SelfNamedPlugin implements
         if(!showFullBitstream)
             return getMetadataDisplay(hrq, limit, viewFull, browseType, colIdx,
                 field, metadataArray, disableCrossLinks, emph, pageContext);
-        Bitstream bs = (hrq.getAttribute("itemlist.bitstream"))[colIdx];
+        StringBuilder debugMsg = new StringBuilder();
+        BitstreamList bss = (BitstreamList) hrq.getAttribute("itemlist.bitstream");
+        debugMsg.append("Bitstream list using full version ...\nitemlist.bitstream.length = ");
+        debugMsg.append(bss.length);
+        Bitstream bs = bss.getNextBS();
 
         if(bs == null)
             return LocaleSupport.getLocalizedMessage(pageContext,"itemlist.bitstream.no");
@@ -75,27 +95,36 @@ public class BitstreamDisplayStrategy extends SelfNamedPlugin implements
         BitstreamFormat bsFormat = bs.getFormat();
         Object[] bsData;
 
-        if(bsFormat.getMIMEType().equals("text/html"))
-            bsLink =
-                hrq.getContextPath() + "/html/" +
-                (itemHandle == null ? "db-id/" + item.getID() : itemHandle) +
-                "/" + UIUtil.encodeBitstreamName(bs.getName(), Constants.DEFAULT_ENCODING);
-        else if(!bsFormat.isInternal()){
-            if ((itemHandle != null) && (bs.getSequenceID() > 0))
+        try{
+            if(bsFormat.getMIMEType().equals("text/html"))
                 bsLink =
-                    hrq.getContextPath() + "/bitstream/" +
-                    item.getHandle() + "/" + bs.getSequenceID() + "/";
-            else
-                bsLink = hrq.getContextPath() + "/retrieve/" + bs.getID() + "/";
+                    hrq.getContextPath() + "/html/" +
+                    (itemHandle == null ? "db-id/" + item.getID() : itemHandle) +
+                    "/" + UIUtil.encodeBitstreamName(bs.getName(), Constants.DEFAULT_ENCODING);
+            else if(!bsFormat.isInternal()){
+                if ((itemHandle != null) && (bs.getSequenceID() > 0))
+                    bsLink =
+                        hrq.getContextPath() + "/bitstream/" +
+                        item.getHandle() + "/" + bs.getSequenceID() + "/";
+                else
+                    bsLink = hrq.getContextPath() + "/retrieve/" + bs.getID() + "/";
 
-            bsLink = bsLink + UIUtil.encodeBitstreamName(bs.getName(), Constants.DEFAULT_ENCODING);
+                bsLink = bsLink + UIUtil.encodeBitstreamName(bs.getName(), Constants.DEFAULT_ENCODING);
+            }
+            else{
+                debugMsg.append("\nbitstream " + bs.getName() + " not null but format " + bsFormat.getMIMEType() + " is internal or not equal to text/html\n");
+                log.debug(debugMsg.toString());
+                return LocaleSupport.getLocalizedMessage(pageContext,"itemlist.bitstream.no");
+            }
+        }catch(IOException ie){
+            throw new JspException(ie);
         }
-        else
-            return LocaleSupport.getLocalizedMessage(pageContext,"itemlist.bitstream.no");
 
         bsData = new Object[2];
         bsData[0] = bsLink;
         bsData[1] = bs.getName();
+        debugMsg.append("\nbitstream " + bs.getName() + " not null and format " + bsFormat.getMIMEType() + "bitstream returning full info{link: '" + bsLink + "', name: '" + bs.getName() + "'");
+        log.debug(debugMsg.toString());
         return LocaleSupport.getLocalizedMessage(pageContext,"itemlist.bitstream.yes.full",bsData);
     }
 

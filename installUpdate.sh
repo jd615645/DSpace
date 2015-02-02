@@ -49,5 +49,5 @@ fi;
 
 echo "=========== cleaning up ===========" | tee -a $log/cleanup.log
 mkdir -p $log/bak $log/config-bak
-for k in $(locate -b .bak- | grep $dspace_des);do mv -v $k $log/bak/ | tee -a $log/cleanup.log; done;
-for k in $(locate -b .old | grep $dspace_des);do mv -v $k $log/config-bak/ | tee -a $log/cleanup.log; done;
+for k in $(cd $dspace_des && ls -d *.bak-*);do mv -v $dspace_des/$k $log/bak/ | tee -a $log/cleanup.log; done;
+for k in $(find $dspace_des/config -name '*.old');do mv -v $k $log/config-bak/ | tee -a $log/cleanup.log; done;
