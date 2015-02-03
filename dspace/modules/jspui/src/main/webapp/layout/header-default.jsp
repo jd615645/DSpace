@@ -124,13 +124,15 @@
     %>
     
 
-<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!--[if lt IE 9]>
-  <script src="<%= request.getContextPath() %>/static/js/html5shiv.js"></script>
-  <script src="<%= request.getContextPath() %>/static/js/respond.min.js"></script>
-<![endif]-->
+
+      <!-- Customize -->
       <link rel="stylesheet" href="<%=request.getContextPath()%>/css/sliding_footer.css" type="text/css">
       <script type="text/javascript" src="<%=request.getContextPath()%>/js/sliding_footer.js"></script>
+      <script type="text/javascript" src="<%=request.getContextPath()%>/js/page.js"></script>
+      <style type="text/css">
+        [headers="s2"], [headers="t2"]{ word-break:break-word; }
+        @media (min-width: 992px) { [headers="t2"]{ min-width: 380px; } }
+      </style>
     </head>
 
     <%-- HACK: leftmargin, topmargin: for non-CSS compliant Microsoft IE browser --%>

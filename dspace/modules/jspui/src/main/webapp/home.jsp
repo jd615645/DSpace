@@ -59,7 +59,7 @@
 %>
 
 <dspace:layout locbar="nolink" titlekey="jsp.home.title" feedData="<%= feedData %>">
-
+<!--
 <% if (supportedLocales != null && supportedLocales.length > 1)
 {
 %>
@@ -78,7 +78,7 @@ for (int i = supportedLocales.length-1; i >= 0; i--)
 <%
 }
 }
-%>
+%>-->
 	<div class="jumbotron">
        <%= topNews %>
 	</div>
@@ -232,6 +232,6 @@ if (communities != null && communities.length != 0)
     	int discovery_panel_cols = 12;
     	int discovery_facet_cols = 3;
     %>
-	<%@ include file="discovery/static-sidebar-facet.jsp" %>
+	<%@ include file="./discovery/static-sidebar-facet.jsp" %>
 </div>
 </dspace:layout>

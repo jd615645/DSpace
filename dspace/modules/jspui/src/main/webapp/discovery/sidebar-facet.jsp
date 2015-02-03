@@ -77,9 +77,11 @@
         }
         String fkey = "jsp.search.facet.refine."+f;
         int limit = facetConf.getFacetLimit()+1;
-        %><div id="facet_<%= f %>" class="panel panel-success">
+%>
+        <div id="facet_<%= f %>" class="panel panel-success">
         <div class="panel-heading"><fmt:message key="<%= fkey %>" /></div>
-        <ul class="list-group"><%
+        <ul class="list-group">
+<%
         int idx = 1;
         int currFp = UIUtil.getIntParameter(request, f+"_page");
         if (currFp < 0)
@@ -92,35 +94,42 @@
             { 
                 if (idx != limit)
                 {
-                %><li class="list-group-item"><span class="badge"><%= fvalue.getCount() %></span> <a href="<%= request.getContextPath()
+%>
+                <li class="list-group-item"><span class="badge"><%= fvalue.getCount() %></span> <a href="<%= request.getContextPath()
                     + searchScope
                     + "/simple-search?filterquery="+URLEncoder.encode(fvalue.getAsFilterQuery(),"UTF-8")
                     + "&amp;filtername="+URLEncoder.encode(f,"UTF-8")
                     + "&amp;filtertype="+URLEncoder.encode(fvalue.getFilterType(),"UTF-8") %>"
                     title="<fmt:message key="jsp.search.facet.narrow"><fmt:param><%=fvalue.getDisplayedValue() %></fmt:param></fmt:message>">
-                    <%= StringUtils.abbreviate(fvalue.getDisplayedValue(),36) %></a></li><%
+                    <%= StringUtils.abbreviate(fvalue.getDisplayedValue(),36) %></a></li>
+<%
                 }
                 idx++;
             }
             if (currFp > 0 || idx > limit)
             {
-                %><li class="list-group-item"><span style="visibility: hidden;">.</span>
+%>
+                <li class="list-group-item"><span style="visibility: hidden;">.</span>
                 <% if (currFp > 0) { %>
-                <a class="pull-left" href="<%= request.getContextPath()
+                <a class="pull-left previous" href="<%= request.getContextPath()
                         + searchScope
                         + "?"+f+"_page="+(currFp-1) %>"><fmt:message key="jsp.search.facet.refine.previous" /></a>
-                <% } %>
-                <% if (idx > limit) { %>
-                <a href="<%= request.getContextPath()
+<%          } %>
+<%              if (idx > limit) { %>
+                 <a class="pull-right next" href="<%= request.getContextPath()
                     + searchScope
-                    + "?"+f+"_page="+(currFp+1) %>"><span class="pull-right"><fmt:message key="jsp.search.facet.refine.next" /></span></a>
-                <%
+                    + "?"+f+"_page="+(currFp+1) %>"><fmt:message key="jsp.search.facet.refine.next" /></a>
+<%
                 }
-                %></li><%
+%>
+                </li>
+<%
             }
         }
-        %></ul></div><%
-    }
-%></div><%
+%>
+        </ul></div>
+<%  }   %>
+</div>
+<%
     }
 %>

@@ -348,25 +348,13 @@
 %>
            </select>
            &nbsp;|&nbsp;
-<%
-           if (sortOptions.size() > 0)
-           {
-%>
-               <label for="sort_by"><fmt:message key="search.results.sort-by"/></label>
-               <select name="sort_by">
-                   <option value="score"><fmt:message key="search.sort-by.relevance"/></option>
-<%
-               for (String sortBy : sortOptions)
-               {
-                   String selected = (sortBy.equals(sortedBy) ? "selected=\"selected\"" : "");
-                   String mKey = "search.sort-by." + sortBy;
-                   %> <option value="<%= sortBy %>" <%= selected %>><fmt:message key="<%= mKey %>"/></option><%
-               }
-%>
-               </select>
-<%
-           }
-%>
+
+           <label for="sort_by"><fmt:message key="search.results.sort-by"/></label>
+           <select id="sort_by" name="sort_by">
+              <option id="score" value="score"><fmt:message key="search.sort-by.relevance"/></option>
+              <option id="bi_sort_2_sort" value="bi_sort_2_sort"><fmt:message key="search.sort-by.date"/></option>
+              <option id="bi_sort_1_sort" value="bi_sort_1_sort"><fmt:message key="search.sort-by.title"/></option>
+           </select>
            <label for="order"><fmt:message key="search.results.order"/></label>
            <select name="order">
                <option value="ASC" <%= ascSelected %>><fmt:message key="search.order.asc" /></option>
@@ -712,7 +700,7 @@ else
 	    int limit = facetConf.getFacetLimit()+1;
 	    
 	    String fkey = "jsp.search.facet.refine."+f;
-	    %><div id="facet_<%= f %>" class="panel panel-success">
+	    %><div id="facet_<%= f %>" class="facet panel panel-success">
 	    <div class="panel-heading"><fmt:message key="<%= fkey %>" /></div>
 	    <ul class="list-group"><%
 	    int idx = 1;
@@ -750,8 +738,7 @@ else
 	    {
 	        %><li class="list-group-item"><span style="visibility: hidden;">.</span>
 	        <% if (currFp > 0) { %>
-	        <a class="pull-left" href="<%= request.getContextPath()
-                + "/simple-search?query="
+	        <a class="pull-left previous" href="<%= "?query="
                 + URLEncoder.encode(query,"UTF-8")
 				+ "&amp;location=" + searchScope
                 + "&amp;sort_by=" + sortedBy
@@ -762,8 +749,7 @@ else
                 + "&amp;"+f+"_page="+(currFp-1) %>"><fmt:message key="jsp.search.facet.refine.previous" /></a>
             <% } %>
             <% if (idx == limit) { %>
-            <a href="<%= request.getContextPath()
-                + "/simple-search?query="
+            <a class="pull-right next" href="<%= "?query="
                 + URLEncoder.encode(query,"UTF-8")
 				+ "&amp;location=" + searchScope
                 + "&amp;sort_by=" + sortedBy
@@ -771,7 +757,7 @@ else
                 + "&amp;rpp=" + rpp
                 + httpFilters
                 + "&amp;etal=" + etAl  
-                + "&amp;"+f+"_page="+(currFp+1) %>"><span class="pull-right"><fmt:message key="jsp.search.facet.refine.next" /></span></a>
+                + "&amp;"+f+"_page="+(currFp+1) %>"><fmt:message key="jsp.search.facet.refine.next" /></a>
             <%
             }
             %></li><%
@@ -787,18 +773,20 @@ else
 </dspace:layout>
 
 <script type="text/javascript">
-  var str=location.href.split("?")[1].split("&"), a="", b="", c="", d="";
+  var loc="";
+  var str=location.href.split("?");
+  var cur={'bi_sort_2_sort':'DESC', 'bi_sort_1_sort':'ASC'};
   var sort="", order="";
-  var cur={'dc.date_dt':'DESC', 'dc.title_sort':'ASC'};
-  for(var i=0; i<str.length; i++){
-    if(str[i].match('filterquery='))  a=str[i];
-    else if(str[i].match('filtername='))  b='&'+str[i];
-    else if(str[i].match('filtertype='))  c='&'+str[i];
-    else if(str[i].match('query='))  d='&'+str[i];
-
-    if(str[i].match('sort_by='))  sort=str[i].split('=')[1];
-    if(str[i].match('order='))  order=str[i].split('=')[1];
+  if(str.length>1){
+      loc="?";
+      str=str[1].split('&');
+      for(var i=0; i<str.length; i++){
+        if(str[i].match('sort_by='))  sort=str[i].split('=')[1];
+        else if(str[i].match('order='))  order=str[i].split('=')[1];
+        else  loc+="&"+str[i];
+      }
   }
+
 
   function s(){
     if(order.match('DESC')) cur[sort]='ASC';
@@ -807,7 +795,8 @@ else
 
   if(sort!="" && order!="") s();
 
-  var query='?'+a+b+c+d;
-  jQuery('#t1').find('a').removeAttr("onclick").attr('href', query+'&sort_by=dc.date_dt&order='+cur['dc.date_dt']);
-  jQuery('#t2').find('a').removeAttr("onclick").attr('href', query+'&sort_by=dc.title_sort&order='+cur['dc.title_sort']);
+  jQuery('.discovery-result-results #t1').find('a').removeAttr("onclick").attr('href', loc+'&sort_by=bi_sort_2_sort&order='+cur['bi_sort_2_sort']);
+  jQuery('.discovery-result-results #t2').find('a').removeAttr("onclick").attr('href', loc+'&sort_by=bi_sort_1_sort&order='+cur['bi_sort_1_sort']);
+
+  if(sort!="")  jQuery('#sort_by').find('#'+sort).attr('selected', 'selected');
 </script>
