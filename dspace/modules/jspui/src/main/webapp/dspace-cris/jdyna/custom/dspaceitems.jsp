@@ -1,3 +1,4 @@
+
 <%--
 
     The contents of this file are subject to the license and copyright
@@ -52,7 +53,7 @@
   				</button>
 				<ul class="dropdown-menu dropdown-menu-right" role="menu">
 				<% for (String[] sub : subLinks ) { %>
-					<li><a href="?open=<%= sub[0] %>"><%= sub[1] %></a></li>
+				<%-- modificat --%><li><a href="<%=request.getAttribute("javax.servlet.forward.request_uri")%>?open=<%= sub[0] %>"><%= sub[1] %></a></li>
 				<% } %>
 				</ul>
 				</div>
@@ -65,6 +66,18 @@
 
 
 <!-- prepare pagination controls -->
+<%!
+//funció per a que les url contiguin be el context i no es perdin portant a altres llocs
+public String addTabContext(String url,HttpServletRequest request){
+	int pos = url.indexOf("?open");
+        if(pos > -1){
+        	String bagBegin = url.substring(0,pos);
+                String bagEnd = url.substring(pos);
+                return bagBegin + request.getAttribute("javax.servlet.forward.request_uri") + bagEnd;
+     	}
+        else return url;
+}
+%>
 <%
     // create the URLs accessing the previous and next search result pages
     StringBuilder sb = new StringBuilder();
@@ -72,11 +85,11 @@
 	sb.append("Result pages:");
 	
     String prevURL = info.buildPrevURL(); 
-    String nextURL = info.buildNextURL();
+    String nextURL = addTabContext(info.buildNextURL(),request); //modificat
 
 
 if (info.getPagefirst() != info.getPagecurrent()) {
-  sb.append(" <a class=\"pagination\" href=\"");
+  sb.append(" <a class=\"pagination previous\" href=\"");
   sb.append(prevURL);
   sb.append("\">previous</a>");
 };
@@ -84,11 +97,11 @@ if (info.getPagefirst() != info.getPagecurrent()) {
 for( int q = info.getPagefirst(); q <= info.getPagelast(); q++ )
 {
    	String myLink = info.buildMyLink(q);
-    sb.append(" " + myLink);
+    sb.append(" " + addTabContext(myLink,request)); //modificat
 } // for
 
 if (info.getPagetotal() > info.getPagecurrent()) {
-  sb.append(" <a class=\"pagination\" href=\"");
+  sb.append(" <a class=\"pagination next\" href=\"");
   sb.append(nextURL);
   sb.append("\">next</a>");
 }
