@@ -43,22 +43,23 @@ public class BitstreamDisplayStrategy extends SelfNamedPlugin implements
             String field, DCValue[] metadataArray, boolean disableCrossLinks,
             boolean emph, PageContext pageContext) throws JspException
     {
-        StringBuilder debugMsg = new StringBuilder();
+        // StringBuilder debugMsg = new StringBuilder();
         BitstreamList bss = (BitstreamList) hrq.getAttribute("itemlist.bitstream");
-        debugMsg.append("Bitstream list using simple version ...\nitemlist.bitstream.length = ");
-        debugMsg.append(bss.length);
+        // debugMsg.append("Bitstream list using simple version ...\nitemlist.bitstream.length = ");
+        // debugMsg.append(bss.length);
         Bitstream bs = bss.getNextBS();
 
         if(bs != null){
             BitstreamFormat bsFormat = bs.getFormat();
             if((!bsFormat.isInternal()) || bsFormat.getMIMEType().equals("text/html"))
                 return LocaleSupport.getLocalizedMessage(pageContext,"itemlist.bitstream.yes");
-            debugMsg.append("\nbitstream " + bs.getName() + " not null but format " + bsFormat.getMIMEType() + " is internal or not equal to text/html\n");
+            log.debug("\nbitstream " + bs.getName() + " not null but format " + bsFormat.getMIMEType() + " is internal or not equal to text/html\n");
+            // debugMsg.append("\nbitstream " + bs.getName() + " not null but format " + bsFormat.getMIMEType() + " is internal or not equal to text/html\n");
         }
-        debugMsg.append("\nbitstream[");
-        debugMsg.append(bss.getCursor());
-        debugMsg.append("] is null");
-        log.debug(debugMsg.toString());
+        // debugMsg.append("\nbitstream[");
+        // debugMsg.append(bss.getCursor());
+        // debugMsg.append("] is null");
+        // log.debug(debugMsg.toString());
 
         return LocaleSupport.getLocalizedMessage(pageContext,"itemlist.bitstream.no");
     }
@@ -81,10 +82,10 @@ public class BitstreamDisplayStrategy extends SelfNamedPlugin implements
         if(!showFullBitstream)
             return getMetadataDisplay(hrq, limit, viewFull, browseType, colIdx,
                 field, metadataArray, disableCrossLinks, emph, pageContext);
-        StringBuilder debugMsg = new StringBuilder();
+        // StringBuilder debugMsg = new StringBuilder();
         BitstreamList bss = (BitstreamList) hrq.getAttribute("itemlist.bitstream");
-        debugMsg.append("Bitstream list using full version ...\nitemlist.bitstream.length = ");
-        debugMsg.append(bss.length);
+        // debugMsg.append("Bitstream list using full version ...\nitemlist.bitstream.length = ");
+        // debugMsg.append(bss.length);
         Bitstream bs = bss.getNextBS();
 
         if(bs == null)
@@ -112,8 +113,7 @@ public class BitstreamDisplayStrategy extends SelfNamedPlugin implements
                 bsLink = bsLink + UIUtil.encodeBitstreamName(bs.getName(), Constants.DEFAULT_ENCODING);
             }
             else{
-                debugMsg.append("\nbitstream " + bs.getName() + " not null but format " + bsFormat.getMIMEType() + " is internal or not equal to text/html\n");
-                log.debug(debugMsg.toString());
+                log.debug("\nbitstream " + bs.getName() + " not null but format " + bsFormat.getMIMEType() + " is internal or not equal to text/html\n");
                 return LocaleSupport.getLocalizedMessage(pageContext,"itemlist.bitstream.no");
             }
         }catch(IOException ie){
@@ -123,8 +123,8 @@ public class BitstreamDisplayStrategy extends SelfNamedPlugin implements
         bsData = new Object[2];
         bsData[0] = bsLink;
         bsData[1] = bs.getName();
-        debugMsg.append("\nbitstream " + bs.getName() + " not null and format " + bsFormat.getMIMEType() + "bitstream returning full info{link: '" + bsLink + "', name: '" + bs.getName() + "'");
-        log.debug(debugMsg.toString());
+        // debugMsg.append("\nbitstream " + bs.getName() + " not null and format " + bsFormat.getMIMEType() + "bitstream returning full info{link: '" + bsLink + "', name: '" + bs.getName() + "'");
+        // log.debug(debugMsg.toString());
         return LocaleSupport.getLocalizedMessage(pageContext,"itemlist.bitstream.yes.full",bsData);
     }
 

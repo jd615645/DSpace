@@ -447,17 +447,16 @@ public class ItemListTag extends TagSupport {
 
             out.print("</tr>");
 
-
             if(hasBitstream){
                 BitstreamList bss = Item.toBitstreamList(items);
                 hrq.setAttribute("itemlist.bitstream", bss);
 
-                StringBuilder sb = new StringBuilder();
-                sb.append("itemlist (from browselist) bitstream length = ");
-                sb.append(bss.length);
-                sb.append(", tested length = ");
-                sb.append(((BitstreamList) hrq.getAttribute("itemlist.bitstream")).length);
-                log.debug(sb.toString());
+                // StringBuilder sb = new StringBuilder();
+                // sb.append("itemlist (from browselist) bitstream length = ");
+                // sb.append(bss.length);
+                // sb.append(", tested length = ");
+                // sb.append(((BitstreamList) hrq.getAttribute("itemlist.bitstream")).length);
+                // log.debug(sb.toString());
             }
 
             // now output each item row
