@@ -28,7 +28,6 @@ import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
 import org.dspace.authorize.ResourcePolicy;
 import org.dspace.browse.BrowsableDSpaceObject;
-import org.dspace.browse.BrowseItem;
 import org.dspace.browse.BrowseException;
 import org.dspace.browse.IndexBrowse;
 import org.dspace.core.Constants;

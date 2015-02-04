@@ -36,7 +36,6 @@ import org.dspace.browse.BrowseItem;
 import org.dspace.browse.CrossLinks;
 import org.dspace.content.DCValue;
 import org.dspace.content.Item;
-import org.dspace.content.Bitstream;
 import org.dspace.content.BitstreamList;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.PluginManager;
