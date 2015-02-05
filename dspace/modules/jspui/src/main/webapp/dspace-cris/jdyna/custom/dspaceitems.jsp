@@ -146,9 +146,14 @@ if (info.getPagetotal() > 1)
     function sortBy(sort_by, order) {
         j('#sort_by<%= info.getType() %>').val(sort_by);
         j('#order<%= info.getType() %>').val(order);
-        j('#sortform<%= info.getType() %>').submit();        
-        console.log(j('#sortform<%= info.getType() %>').submit().serialize());
+        j('#sortform<%= info.getType() %>').submit(function(e){e.preventDefault();});
+        return j('#sortform<%= info.getType() %>').submit().serialize();
     }
+    
+    var url = jQuery('.pagination').eq(1).attr('href');
+    if(typeof(url)!='undefined') url=url.replace(url.match( /\?\S*/), "");
+    var pre = jQuery('.previous');
+    pre = pre.attr('href', url+pre.attr('href'));
 --></script>
 
 <%-- show pagination controls at bottom --%>

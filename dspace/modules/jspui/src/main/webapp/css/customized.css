@@ -1,4 +1,4 @@
 [headers="s2"], [headers="t2"]{ word-break:break-word; }
 @media (min-width: 992px) { [headers="t2"]{ min-width: 380px; } }
 .metadataFieldLabel{ white-space: nowrap; }
-
+#t1.sortable{ display: block; }

@@ -26,6 +26,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="jdynatags" prefix="dyna"%>
 
+<style type="text/css">
+  [headers="t2"]{min-width: initial;}
+</style>
+
 <c:set var="dspace.layout.head" scope="request">
 	<link href="<%=request.getContextPath() %>/css/misctable.css" type="text/css" rel="stylesheet" />
 </c:set>
@@ -117,7 +121,16 @@ if (info.getPagetotal() > 1)
     function sortBy(sort_by, order) {
         j('#sort_by<%= info.getType() %>').val(sort_by);
         j('#order<%= info.getType() %>').val(order);
-        j('#sortform<%= info.getType() %>').submit();        
+        j('#sortform<%= info.getType() %>').submit(function(e){e.preventDefault();});
+        return j('#sortform<%= info.getType() %>').submit().serialize();
+    }
+
+    var url = jQuery("[role='tablist']").find('.active a').attr('href').split('?')[0];
+    var page = jQuery('.pagination');
+
+    for(var i=0; i<page.length; i++){
+      var href = url+page.eq(i).attr('href');
+      page.eq(i).attr('href', href);
     }
 --></script>
 <%-- show pagniation controls at bottom --%>
