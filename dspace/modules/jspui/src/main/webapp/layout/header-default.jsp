@@ -44,157 +44,144 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <title><%= siteName %>: <%= title %></title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="Generator" content="<%= generator %>" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="shortcut icon" href="<%= request.getContextPath() %>/favicon.ico" type="image/x-icon"/>
-	    <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/jquery-ui-1.10.3.custom/redmond/jquery-ui-1.10.3.custom.css" type="text/css" />
-	    <link href="<%= request.getContextPath() %>/css/researcher.css" type="text/css" rel="stylesheet" />
-       <link href="<%= request.getContextPath() %>/css/jdyna.css" type="text/css" rel="stylesheet" />
-	    <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/bootstrap/bootstrap.min.css" type="text/css" />
-	    <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/bootstrap/bootstrap-theme.min.css" type="text/css" />
-     <%-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">--%>
-	    <link href="<%= request.getContextPath() %>/static/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-		<link href="<%= request.getContextPath() %>/static/css/jstree/themes/default/style.min.css" rel="stylesheet"/>
-	    <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/bootstrap/dspace-theme.css" type="text/css" />
+<head>
+    <title><%= siteName %>: <%= title %></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Generator" content="<%= generator %>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Latest compiled and minified CSS -->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">-->
+    <!-- Optional theme -->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">-->
+    <link rel="shortcut icon" href="<%= request.getContextPath() %>/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/jquery-ui-1.10.3.custom/redmond/jquery-ui-1.10.3.custom.css" type="text/css" />
+    <link href="<%= request.getContextPath() %>/css/researcher.css" type="text/css" rel="stylesheet" />
+    <link href="<%= request.getContextPath() %>/css/jdyna.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/bootstrap/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/static/css/bootstrap/bootstrap-theme.min.css" type="text/css">
+    <link href="<%= request.getContextPath() %>/static/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="<%= request.getContextPath() %>/static/css/jstree/themes/default/style.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/bootstrap/dspace-theme.css" type="text/css" />
 <%
-    if (!"NONE".equals(feedRef))
-    {
-        for (int i = 0; i < parts.size(); i+= 3)
-        {
+    if (!"NONE".equals(feedRef)){
+        for (int i = 0; i < parts.size(); i+= 3){
 %>
-        <link rel="alternate" type="application/<%= (String)parts.get(i) %>" title="<%= (String)parts.get(i+1) %>" href="<%= request.getContextPath() %>/feed/<%= (String)parts.get(i+2) %>/<%= feedRef %>"/>
+            <link rel="alternate" type="application/<%= (String)parts.get(i) %>" title="<%= (String)parts.get(i+1) %>" href="<%= request.getContextPath() %>/feed/<%= (String)parts.get(i+2) %>/<%= feedRef %>"/>
 <%
         }
     }
-    
-    if (osLink)
-    {
+
+    if (osLink){
 %>
         <link rel="search" type="application/opensearchdescription+xml" href="<%= request.getContextPath() %>/<%= osCtx %>description.xml" title="<%= osName %>"/>
 <%
     }
-
-    if (extraHeadData != null)
-        { %>
-<%= extraHeadData %>
-<%
-        }
+    if (extraHeadData != null){ 
 %>
-        
-	<script type='text/javascript' src="<%= request.getContextPath() %>/static/js/jquery/jquery-1.10.2.min.js"></script>
-	<script type='text/javascript' src='<%= request.getContextPath() %>/static/js/jquery/jquery-ui-1.10.3.custom.min.js'></script>
-	<script type='text/javascript' src='<%= request.getContextPath() %>/static/js/bootstrap/bootstrap.min.js'></script>
-	<script type='text/javascript' src='<%= request.getContextPath() %>/static/js/holder.js'></script>
-	<script type="text/javascript" src="<%= request.getContextPath() %>/utils.js"></script>
+        <%= extraHeadData %>
+<%
+    }
+%>
+
+    <script type='text/javascript' src="<%= request.getContextPath() %>/static/js/jquery/jquery-1.10.2.min.js"></script>
+    <script type='text/javascript' src='<%= request.getContextPath() %>/static/js/jquery/jquery-ui-1.10.3.custom.min.js'></script>
+    <script type='text/javascript' src='<%= request.getContextPath() %>/static/js/bootstrap/bootstrap.min.js'></script>
+    <script type='text/javascript' src='<%= request.getContextPath() %>/static/js/holder.js'></script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/utils.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath() %>/static/js/choice-support.js"> </script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/jdyna/jdyna.js"></script>
-	<script type='text/javascript'>
-		var j = jQuery.noConflict();
-		var $ = jQuery.noConflict();
-		var JQ = j;
-		dspaceContextPath = "<%=request.getContextPath()%>";
-	</script>
+    <script type='text/javascript'>
+        var j = jQuery.noConflict();
+        var $ = jQuery.noConflict();
+        var JQ = j;
+        spaceContextPath = "<%=request.getContextPath()%>";
+    </script>
     <%--Gooogle Analytics recording.--%>
-    <%
-    if (analyticsKey != null && analyticsKey.length() > 0)
-    {
-    %>
+    <% if (analyticsKey != null && analyticsKey.length() > 0){%>
         <script type="text/javascript">
-            var _gaq = _gaq || [];
+           var _gaq = _gaq || [];
             _gaq.push(['_setAccount', '<%= analyticsKey %>']);
             _gaq.push(['_trackPageview']);
 
-            (function() {
-                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+           (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+           ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
             })();
         </script>
-    <%
+<%
     }
-    if (extraHeadDataLast != null)
-    { %>
-		<%= extraHeadDataLast %>
-		<%
-		    }
-    %>
-    
+    if (extraHeadDataLast != null){ 
+%>
+        <%= extraHeadDataLast %>
+<%
+    }
+%>
+    <!-- Customize -->
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/sliding_footer.css" type="text/css">
+    <link href="<%= request.getContextPath() %>/css/customized.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="<%=request.getContextPath()%>/js/sliding_footer.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/js/main.js"></script>
+</head>
 
 
-      <!-- Customize -->
-      <link rel="stylesheet" href="<%=request.getContextPath()%>/css/sliding_footer.css" type="text/css">
-      <script type="text/javascript" src="<%=request.getContextPath()%>/js/sliding_footer.js"></script>
-      <script type="text/javascript" src="<%=request.getContextPath()%>/js/page.js"></script>
-      <style type="text/css">
-        [headers="s2"], [headers="t2"]{ word-break:break-word; }
-        @media (min-width: 992px) { [headers="t2"]{ min-width: 380px; } }
-      </style>
-    </head>
 
-    <%-- HACK: leftmargin, topmargin: for non-CSS compliant Microsoft IE browser --%>
-    <%-- HACK: marginwidth, marginheight: for non-CSS compliant Netscape browser --%>
-    <body class="undernavigation">
-<a class="sr-only" href="#content">Skip navigation</a>
-<header class="navbar navbar-inverse navbar-fixed-top">    
-    <%
-    if (!navbar.equals("off"))
-    {
+<%-- HACK: leftmargin, topmargin: for non-CSS compliant Microsoft IE browser --%>
+<%-- HACK: marginwidth, marginheight: for non-CSS compliant Netscape browser --%>
+<body class="undernavigation">
+    <a class="sr-only" href="#content">Skip navigation</a>
+    <header class="navbar navbar-inverse navbar-fixed-top">    
+<%
+        if (!navbar.equals("off")){
 %>
             <div class="container">
-                <dspace:include page="<%= navbar %>" />
+            <dspace:include page="<%= navbar %>" />
             </div>
 <%
-    }
-    else
-    {
-    	%>
-        <div class="container">
+        }else{
+%>
+            <div class="container">
             <dspace:include page="/layout/navbar-minimal.jsp" />
+            </div>
+<%
+        }
+%>
+    </header>
+    <main id="content" role="main">
+        <div class="container banner">
+            <div class="row">
+                <div class="col-md-9 brand">
+                    <h1><fmt:message key="jsp.layout.header-default.brand.heading" /></h1>
+                    <fmt:message key="jsp.layout.header-default.brand.description" /> 
+                </div>
+                <div class="col-md-3">
+                    <img class="pull-right" src="<%= request.getContextPath() %>/image/libicon01.png">
+                </div>
+            </div>
         </div>
-<%    	
-    }
-%>
-</header>
-
-<main id="content" role="main">
-<div class="container banner">
-	<div class="row">
-		<div class="col-md-9 brand">
-  		<h1><fmt:message key="jsp.layout.header-default.brand.heading" /></h1>
-      <fmt:message key="jsp.layout.header-default.brand.description" /> 
-    </div>
-    <div class="col-md-3">
-      <img class="pull-right" src="<%= request.getContextPath() %>/image/libicon01.png">
-    </div>
-	</div>
-</div>	
-<br/>
-                <%-- Location bar --%>
+        <br/>
+        <%-- Location bar --%>
 <%
-    if (locbar)
-    {
+        if (locbar){
 %>
-<div class="container">
+            <div class="container">
                 <dspace:include page="/layout/location-bar.jsp" />
-</div>                
+            </div>                
 <%
-    }
+        }
 %>
 
 
         <%-- Page contents --%>
-<div class="container">
-  <div class="row">
-    <div class="col-md-2 hidden-xs hidden-sm">
-      <dspace:include page="/layout/sidebar.jsp" />
-    </div>
-<% if (request.getAttribute("dspace.layout.sidebar") != null) { %>
+        <div class="container">
+        <div class="row">
+        <div class="col-md-2 hidden-xs hidden-sm">
+        <dspace:include page="/layout/sidebar.jsp" />
+        </div>
+        <% if (request.getAttribute("dspace.layout.sidebar") != null) { %>
         <div class="col-md-8">
-<% } %>		
-<% if (request.getAttribute("dspace.layout.sidebar") == null) { %>
+        <% } %>
+        <% if (request.getAttribute("dspace.layout.sidebar") == null) { %>
         <div class="col-md-10">
-<% } %>     
+        <% } %>

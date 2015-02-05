@@ -226,3 +226,5 @@
 </dspace:layout>
 </c:otherwise>
 </c:choose>
+
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/cris_page.js"></script>

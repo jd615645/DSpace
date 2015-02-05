@@ -54,7 +54,7 @@
     // create the URLs accessing the previous and next search result pages
     StringBuilder sb = new StringBuilder();
 	sb.append("<div align=\"center\">");
-	sb.append("Result pages:");
+	//sb.append("Result pages:");
 	
     String prevURL = info.buildPrevURL(); 
     String nextURL = info.buildNextURL();
@@ -63,7 +63,9 @@
 if (info.getPagefirst() != info.getPagecurrent()) {
   sb.append(" <a class=\"pagination previous\" href=\"");
   sb.append(prevURL);
-  sb.append("\">previous</a>");
+  sb.append("\"> <span class=\"glyphicon glyphicon-chevron-left\" aria-hidden=\"true\"></span> </a>");
+}else{
+  sb.append(" <span class=\"glyphicon glyphicon-chevron-left\" aria-hidden=\"true\"></span> ");
 };
 
 for( int q = info.getPagefirst(); q <= info.getPagelast(); q++ )
@@ -75,7 +77,9 @@ for( int q = info.getPagefirst(); q <= info.getPagelast(); q++ )
 if (info.getPagetotal() > info.getPagecurrent()) {
   sb.append(" <a class=\"pagination next\" href=\"");
   sb.append(nextURL);
-  sb.append("\">next</a>");
+  sb.append("\"> <span class=\"glyphicon glyphicon-chevron-right\" aria-hidden=\"true\"></span> </a>");
+}else{
+  sb.append(" <span class=\"glyphicon glyphicon-chevron-right\" aria-hidden=\"true\"></span> ");
 }
 
 sb.append("</div>");

@@ -82,7 +82,7 @@ public String addTabContext(String url,HttpServletRequest request){
     // create the URLs accessing the previous and next search result pages
     StringBuilder sb = new StringBuilder();
 	sb.append("<div align=\"center\">");
-	sb.append("Result pages:");
+	//sb.append("Result pages:");
 	
     String prevURL = info.buildPrevURL(); 
     String nextURL = addTabContext(info.buildNextURL(),request); //modificat
@@ -91,7 +91,9 @@ public String addTabContext(String url,HttpServletRequest request){
 if (info.getPagefirst() != info.getPagecurrent()) {
   sb.append(" <a class=\"pagination previous\" href=\"");
   sb.append(prevURL);
-  sb.append("\">previous</a>");
+  sb.append("\"> <span class=\"glyphicon glyphicon-chevron-left\" aria-hidden=\"true\"></span> </a>");
+}else{
+  sb.append(" <span class=\"glyphicon glyphicon-chevron-left\" aria-hidden=\"true\"></span> ");
 };
 
 for( int q = info.getPagefirst(); q <= info.getPagelast(); q++ )
@@ -103,7 +105,9 @@ for( int q = info.getPagefirst(); q <= info.getPagelast(); q++ )
 if (info.getPagetotal() > info.getPagecurrent()) {
   sb.append(" <a class=\"pagination next\" href=\"");
   sb.append(nextURL);
-  sb.append("\">next</a>");
+  sb.append("\"> <span class=\"glyphicon glyphicon-chevron-right\" aria-hidden=\"true\"></span> </a>");
+}else{
+  sb.append(" <span class=\"glyphicon glyphicon-chevron-right\" aria-hidden=\"true\"></span> ");
 }
 
 sb.append("</div>");
@@ -143,6 +147,7 @@ if (info.getPagetotal() > 1)
         j('#sort_by<%= info.getType() %>').val(sort_by);
         j('#order<%= info.getType() %>').val(order);
         j('#sortform<%= info.getType() %>').submit();        
+        console.log(j('#sortform<%= info.getType() %>').submit().serialize());
     }
 --></script>
 
