@@ -123,6 +123,7 @@
     <link href="<%= request.getContextPath() %>/css/customized.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/sliding_footer.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/main.js"></script>
+    <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
 </head>
 
 

@@ -128,6 +128,13 @@
 
       <link rel="stylesheet" href="/css/sliding_footer.css" type="text/css">
       <script type="text/javascript" src="/js/sliding_footer.js"></script>
+
+
+      <!-- Customize -->
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/sliding_footer.css" type="text/css">
+    <link href="<%= request.getContextPath() %>/css/customized.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="<%=request.getContextPath()%>/js/sliding_footer.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/js/main.js"></script>
     </head>
 
     <%-- HACK: leftmargin, topmargin: for non-CSS compliant Microsoft IE browser --%>
