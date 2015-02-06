@@ -58,8 +58,8 @@
     <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/jquery-ui-1.10.3.custom/redmond/jquery-ui-1.10.3.custom.css" type="text/css" />
     <link href="<%= request.getContextPath() %>/css/researcher.css" type="text/css" rel="stylesheet" />
     <link href="<%= request.getContextPath() %>/css/jdyna.css" type="text/css" rel="stylesheet" />
-    <link rel="stylesheet" href="/static/css/bootstrap/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/bootstrap/bootstrap-theme.min.css" type="text/css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/bootstrap/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/bootstrap/bootstrap-theme.min.css" type="text/css">
     <link href="<%= request.getContextPath() %>/static/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="<%= request.getContextPath() %>/static/css/jstree/themes/default/style.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/bootstrap/dspace-theme.css" type="text/css" />
