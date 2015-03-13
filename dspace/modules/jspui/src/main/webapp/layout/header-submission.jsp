@@ -126,8 +126,6 @@
   <script src="<%= request.getContextPath() %>/static/js/respond.min.js"></script>
 <![endif]-->
 
-      <link rel="stylesheet" href="/css/sliding_footer.css" type="text/css">
-      <script type="text/javascript" src="/js/sliding_footer.js"></script>
 
 
       <!-- Customize -->
