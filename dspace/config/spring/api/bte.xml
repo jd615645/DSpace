@@ -538,7 +538,7 @@
 				<entry value="pisbn" key="dc.identifier.isbn" />
 				<entry value="journal" key="dc.source" />
 				<entry value="title" key="dc.title" />
-				<entry value="issued" key="dc.date.issued" />
+				<entry value="issued" key="dc.date" />
 				<entry value="language" key="dc.language.iso" />
 				<entry value="subtype" key="dc.type" />
 				<entry value="authors" key="dc.contributor.author" />
