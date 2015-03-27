@@ -285,7 +285,7 @@ j(document).ready(function() {
 <div class="panel-body">
        <li id="pmcCitedCount" style="display: none;"><div id="pmcCitedResult" class="citedByDiv"></div></li>
        <br>
-       <div data-badge-details="right" data-badge-type="medium-donut" data-doi="<%out.println(item.getMetadata("dc.identifier.doi")[0].value);%>" data-hide-no-mentions="true" class="altmetric-embed"></div>
+       <div data-badge-details="right" data-badge-type="medium-donut" data-doi="<%out.println(item.getMetadata("dc.identifier.doi").length >= 1 ? item.getMetadata("dc.identifier.doi")[0].value : "--");%>" data-hide-no-mentions="true" class="altmetric-embed"></div>
 </div>
 </div>
 
