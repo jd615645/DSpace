@@ -43,16 +43,16 @@
   <%-- ====================================================== --%>
 	<div class="col-md-10">
          <div class="row">
-             <span class="metadataFieldLabel col-md-4"><fmt:message key="jsp.submit.review.init-question1"/></span>
-             <span class="metadataFieldValue col-md-8"><%= (si.hasMultipleTitles() ? LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.review.state1") : LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.review.state2")) %></span>
+             <span class="metadataFieldLabel col-xs-2"><fmt:message key="jsp.submit.review.init-question1"/></span>
+             <span class="metadataFieldValue col-xs-10"><%= (si.hasMultipleTitles() ? LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.review.state1") : LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.review.state2")) %></span>
          </div>
          <div class="row">
-             <span class="metadataFieldLabel col-md-4"><fmt:message key="jsp.submit.review.init-question2"/></span>
-             <span class="metadataFieldValue col-md-8"><%= (si.isPublishedBefore() ? LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.review.state1") : LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.review.state2")) %></span>
+             <span class="metadataFieldLabel col-xs-2"><fmt:message key="jsp.submit.review.init-question2"/></span>
+             <span class="metadataFieldValue col-xs-10"><%= (si.isPublishedBefore() ? LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.review.state1") : LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.review.state2")) %></span>
          </div>
          <div class="row">
-             <span class="metadataFieldLabel col-md-4"><fmt:message key="jsp.submit.review.init-question3"/></span>
-             <span class="metadataFieldValue col-md-8"><%= (si.hasMultipleFiles() ? LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.review.state1") : LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.review.state2")) %></span>
+             <span class="metadataFieldLabel col-xs-2"><fmt:message key="jsp.submit.review.init-question3"/></span>
+             <span class="metadataFieldValue col-xs-10"><%= (si.hasMultipleFiles() ? LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.review.state1") : LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.review.state2")) %></span>
          </div>
     </div>
 	<div class="col-md-2">

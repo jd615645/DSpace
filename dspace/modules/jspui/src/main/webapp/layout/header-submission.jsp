@@ -167,7 +167,7 @@
         <h1><fmt:message key="jsp.layout.header-default.brand.heading" /></h1>
         <fmt:message key="jsp.layout.header-default.brand.description" /> 
         </div>
-        <div class="col-md-3"><img class="pull-right" src="<%= request.getContextPath() %>/image/logo.gif">
+        <div class="col-md-3"><img class="pull-right" src="<%= request.getContextPath() %>/image/libicon01.png">
         </div>
     </div>
 </div>  

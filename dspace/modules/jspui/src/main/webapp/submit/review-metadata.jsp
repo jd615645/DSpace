@@ -117,10 +117,10 @@
           StringBuffer row = new StringBuffer();
           
           row.append("<div class=\"row\">");
-          row.append("<span class=\"metadataFieldLabel col-md-4 \">");
+          row.append("<span class=\"metadataFieldLabel col-xs-4\">");
           row.append(inputs[z].getLabel());
           row.append("</span>");
-          row.append("<span class=\"metadataFieldValue col-md-8\">");
+          row.append("<span class=\"metadataFieldValue col-xs-8\">");
 
           if (inputType.equals("qualdrop_value"))
           {

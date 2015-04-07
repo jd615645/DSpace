@@ -294,7 +294,7 @@
 <%  } %>
 
 <dspace:layout style="submission"
-			   locbar="off"
+			   locbar="nolink"
                navbar="off"
                titlekey="jsp.submit.choose-file.title"
                nocache="true">

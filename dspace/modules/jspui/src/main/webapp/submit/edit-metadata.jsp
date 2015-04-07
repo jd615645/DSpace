@@ -1427,4 +1427,22 @@
 
 <script type="text/javascript">
   jQuery('[data-toggle="tooltip"]').tooltip();
+  var str="";
+  if(j('#dc_relation').attr('value')!=""){
+    str=j('#dc_relation').attr('value');
+    if(j('#dc_relation_hasversion').attr('value')!="") str+=", Volume "+j('#dc_relation_hasversion').attr('value');
+    if(j('#dc_relation_haspart').attr('value')!="") str+=", Issue "+j('#dc_relation_haspart').attr('value');
+    if(j('#dc_relation_ispartof').attr('value')!=""){
+      str+=", Page(s) "+j('#dc_relation_ispartof').attr('value');
+      if(j('#dc_relation_ispartof').attr('value').match('-')==null && j('#dc_relation_ispartofseries').attr('value')!=""){
+        str+="-"+j('#dc_relation_ispartofseries').attr('value')+".";
+      }else str+=".";
+    }
+    j('#dc_relation').val(str);
+  }
+  for(i=0; i<4; i++){
+    j('#dc_relation').parents('.row.col-md-12').parent().parent().next().remove();
+    j('#dc_relation').parents('.row.col-md-12').parent().parent().next().remove();
+  }
+  
 </script>

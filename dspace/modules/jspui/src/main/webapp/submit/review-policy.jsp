@@ -76,9 +76,9 @@
 			<% Date startDate = rpolicies.get(0).getStartDate(); 
 		    if(startDate!=null) { %>
 			<div class="row">
-			<span class="metadataFieldLabel col-md-4"><fmt:message key="jsp.submit.access.embargo_setting.heading"/></span>
+			<span class="metadataFieldLabel col-xs-4"><fmt:message key="jsp.submit.access.embargo_setting.heading"/></span>
 			<span
-			class="metadataFieldValue col-md-8">
+			class="metadataFieldValue col-xs-8">
 
 		    	<fmt:message key="jsp.submit.access.review.embargoed"><fmt:param><%= startDate %></fmt:param></fmt:message>		    
 		    </span>
