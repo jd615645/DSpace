@@ -1426,7 +1426,10 @@
 </dspace:layout>
 
 <script type="text/javascript">
+  // show hint by tooltip
   jQuery('[data-toggle="tooltip"]').tooltip();
+
+  // combine the periodical name, volume, issue, start and end page into a single column
   var str="";
   if(j('#dc_relation').attr('value')!=""){
     str=j('#dc_relation').attr('value');
@@ -1438,11 +1441,24 @@
         str+="-"+j('#dc_relation_ispartofseries').attr('value')+".";
       }else str+=".";
     }
-    j('#dc_relation').val(str);
+    j('#dc_relation').attr('value', str);
   }
   for(i=0; i<4; i++){
     j('#dc_relation').parents('.row.col-md-12').parent().parent().next().remove();
     j('#dc_relation').parents('.row.col-md-12').parent().parent().next().remove();
+  }
+
+  // separate a string of keywords into individual ones
+  if(j("[name=dc_subject_1]").length!=0 && j("[name=dc_subject_2]").length==0){
+    var keyword=j("[name=dc_subject_1]").attr('value').split(';');
+    for(i=1; i<=keyword.length; i++){
+      var subject=j("#dc_subject_1").parent().parent().clone();
+      subject.find('input').attr('name', 'dc_subject_'+i).attr('id', 'dc_subject_'+i).attr('value', keyword[i-1]);
+      subject.find('button').attr('name', 'submit_dc_subject_remove_'+(i-1));
+      subject.insertBefore(j('#dc_subject').parent().parent());
+      // j('[name=dc_subject_'+i+']')
+    }
+    j("[name=dc_subject_1]").eq(0).parent().parent().remove();
   }
   
 </script>

@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE input-forms SYSTEM "input-forms.dtd">
 
+<!-- <fmt:schema xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"> </fmt:schema> -->
 
 <input-forms>
 
@@ -38,50 +39,60 @@
 
    <form name="traditional">
      <page number="1">
-       <field>
-		 <dc-schema>dc</dc-schema>
-         <dc-element>contributor</dc-element>
-         <dc-qualifier>author</dc-qualifier>
-         <repeatable>true</repeatable>
-         <label>Authors</label>
-         <input-type>onebox</input-type>
-         <hint>Enter the names of the authors of this item below.</hint>
-         <required>You must enter at least an author.</required>
-       </field>
-
-       <field>
+	<field>
 		 <dc-schema>dc</dc-schema>
          <dc-element>title</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Title</label>
+         <label>Title 題名</label>
          <input-type>onebox</input-type>
-         <hint>Enter the main title of the item.</hint>
+         <hint>著錄該書書名。正副書名間之分隔符號，以半型冒號「:」分隔。【例】圖書館管理:領導與溝通【例】International Relations: A Concise Introduction</hint>
          <required>You must enter a main title for this item.</required>
        </field>
 
        <field>
-		 <dc-schema>dc</dc-schema>
-         <dc-element>title</dc-element>
-         <dc-qualifier>alternative</dc-qualifier>
+     <dc-schema>dc</dc-schema>
+         <dc-element>contributor</dc-element>
+         <dc-qualifier>author</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Other Titles</label>
+         <label>Author 作者</label>
          <input-type>onebox</input-type>
-         <hint>If the item has any alternative titles, please enter them below.</hint>
+         <hint>照樣著錄作者姓名。</hint>
+         <required>You must enter at least an author.</required>
+       </field>
+       
+       <field>
+     <dc-schema>dc</dc-schema>
+         <dc-element>contributor</dc-element>
+         <dc-qualifier>other</dc-qualifier>
+         <repeatable>true</repeatable>
+         <label>Contributor 作者以外之貢獻者</label>
+         <input-type>onebox</input-type>
+         <hint>照樣著錄編者姓名，著錄格式同上。作者及編者以外人員皆不著錄。</hint>
          <required></required>
        </field>
 
        <field>
 		 <dc-schema>dc</dc-schema>
          <dc-element>date</dc-element>
-         
+         <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Date of Issue</label>
+         <label>Date 日期</label>
          <input-type>date</input-type>
-         <hint>Please give the date of previous publication or public distribution
-                        below.  You can leave out the day and/or month if they aren't
-                        applicable.</hint>
+         <hint>著錄作品出版日期。民國或其他紀年格式均轉換為西元紀年著錄。</hint>
          <required>You must enter at least the year.</required>
+       </field>
+
+       <field>
+     <dc-schema>dc</dc-schema>
+         <dc-element>subject</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>true</repeatable>
+         <label>Subject 關鍵詞</label>
+         <input-type>onebox</input-type>
+         <hint>照樣著錄文章關鍵詞。</hint>
+         <required></required>
+         <vocabulary>srsc</vocabulary>
        </field>
 
        <field>
@@ -89,137 +100,171 @@
          <dc-element>publisher</dc-element>
          <dc-qualifier></dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Publisher</label>
+         <label>Publisher 出版單位</label>
          <input-type>onebox</input-type>
-         <hint>Enter the name of the publisher of the previously issued instance of this item.</hint>
+         <hint>著錄出版項照樣著錄。【例】ELSEVIER SCI LTD</hint>
          <required></required>
        </field>
 
        <field>
-		 <dc-schema>dc</dc-schema>
-         <dc-element>identifier</dc-element>
-         <dc-qualifier>citation</dc-qualifier>
+     <dc-schema>dc</dc-schema>
+         <dc-element>description</dc-element>
+         <dc-qualifier>abstract</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Citation</label>
-         <input-type>onebox</input-type>
-         <hint>Enter the standard citation for the previously issued instance of this item.</hint>
+         <label>Description 描述</label>
+         <input-type>textarea</input-type>
+         <hint>照樣著錄中文或英文目錄。</hint>
          <required></required>
        </field>
 
        <field>
-		 <dc-schema>dc</dc-schema>
+     <dc-schema>dc</dc-schema>
+         <dc-element>type</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>true</repeatable>
+         <label>Type 著作類型</label>
+         <input-type value-pairs-name="common_types">dropdown</input-type>
+         <hint>著錄資料類型。</hint>
+         <required>You must enter a format for this item.</required>
+       </field>
+
+       <field>
+     <dc-schema>dc</dc-schema>
+         <dc-element>language</dc-element>
+         <dc-qualifier>iso</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Language 語言</label>
+         <input-type value-pairs-name="common_iso_languages">dropdown</input-type>
+         <hint>著錄撰寫文章使用之主要語言。</hint>
+         <required>You must select a language for this item.</required>
+       </field>
+
+       <field>
+     <dc-schema>dc</dc-schema>
+         <dc-element>relation</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Relation 集叢名稱</label>
+         <input-type>onebox</input-type>
+         <hint>著錄該書集叢名稱，以半型標點符號分隔，格式如下：期刊名, Volume 卷, Issue 期, Page(s) 起頁-迄頁.【例】Food Chemistry, Volume 101, Issue 1, Page(s) 140-147.</hint>
+         <required>You must enter the source for this item.</required>
+       </field>
+
+       <field>
+     <dc-schema>dc</dc-schema>
+         <dc-element>relation</dc-element>
+         <dc-qualifier>hasversion</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>volume</label>
+         <input-type>onebox</input-type>
+         <hint>volume</hint>
+         <required></required>
+       </field>
+
+       <field>
+     <dc-schema>dc</dc-schema>
+         <dc-element>relation</dc-element>
+         <dc-qualifier>haspart</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>issue</label>
+         <input-type>onebox</input-type>
+         <hint>issue</hint>
+         <required></required>
+       </field>
+
+       <field>
+     <dc-schema>dc</dc-schema>
+         <dc-element>relation</dc-element>
+         <dc-qualifier>ispartof</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>firstpage</label>
+         <input-type>onebox</input-type>
+         <hint>firstpage</hint>
+         <required></required>
+       </field>
+
+       <field>
+     <dc-schema>dc</dc-schema>
          <dc-element>relation</dc-element>
          <dc-qualifier>ispartofseries</dc-qualifier>
-         <repeatable>true</repeatable>
-         <label>Series/Report No.</label>
-         <input-type>series</input-type>
-         <hint>Enter the series and number assigned to this item by your community.</hint>
+         <repeatable>false</repeatable>
+         <label>lastpage</label>
+         <input-type>onebox</input-type>
+         <hint>lastpage</hint>
          <required></required>
        </field>
 
        <field>
-		 <dc-schema>dc</dc-schema>
+     <dc-schema>dc</dc-schema>
+         <dc-element>relation</dc-element>
+         <dc-qualifier>uri</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Link 作品外部連結</label>
+         <input-type>onebox</input-type>
+         <hint>連結至該期刊出版社網頁。【例】http://dx.doi.org/10.1111/j.2041-6156.2011.01049.x </hint>
+         <required></required>
+       </field>
+
+       <field>
+     <dc-schema>dc</dc-schema>
+         <dc-element>identifier</dc-element>
+         <dc-qualifier>isbn</dc-qualifier>
+         <!-- An input-type of qualdrop_value MUST be marked as repeatable -->
+         <repeatable>true</repeatable>
+         <label>ISBN 國際標準書號</label>
+         <input-type>onebox</input-type>
+         <hint>著錄該書之ISBN，不加「-」符號。【例】9789866286377</hint>
+         <required></required>
+       </field>
+
+       <field>
+     <dc-schema>dc</dc-schema>
+         <dc-element>identifier</dc-element>
+         <dc-qualifier>doi</dc-qualifier>
+         <!-- An input-type of qualdrop_value MUST be marked as repeatable -->
+         <repeatable>true</repeatable>
+         <label>DOI 數位物件識別碼</label>
+         <input-type>onebox</input-type>
+         <hint>著錄期刊之DOI，照樣著錄。【例】10.1111/j.2041-6156.2011.01049.x</hint>
+         <required></required>
+       </field>
+
+       <field>
+     <dc-schema>dc</dc-schema>
+         <dc-element>identifier</dc-element>
+         <dc-qualifier>patent</dc-qualifier>
+         <!-- An input-type of qualdrop_value MUST be marked as repeatable -->
+         <repeatable>true</repeatable>
+         <label>Patent 專利號</label>
+         <input-type>onebox</input-type>
+         <hint>著錄專利號碼。【例】I369463【例】US7998768 B1</hint>
+         <required></required>
+       </field>
+
+       <field>
+     <dc-schema>dc</dc-schema>
          <dc-element>identifier</dc-element>
          <dc-qualifier></dc-qualifier>
          <!-- An input-type of qualdrop_value MUST be marked as repeatable -->
          <repeatable>true</repeatable>
-         <label>Identifiers</label>
-         <input-type value-pairs-name="common_identifiers">qualdrop_value</input-type>
-         <hint>If the item has any identification numbers or codes associated with
-it, please enter the types and the actual numbers or codes below.</hint>
-         <required></required>
-       </field>
-
-       <field>
-		 <dc-schema>dc</dc-schema>
-         <dc-element>type</dc-element>
-         <dc-qualifier></dc-qualifier>
-         <repeatable>true</repeatable>
-         <label>Type</label>
-         <input-type value-pairs-name="common_types">dropdown</input-type>
-         <hint> Select the type(s) of content of the item. To select more than one value in the list, you may have to hold down the "CTRL" or "Shift" key.</hint>
-         <required>You must select a type for this item.</required>
-       </field>
-
-       <field>
-		 <dc-schema>dc</dc-schema>
-         <dc-element>language</dc-element>
-         <dc-qualifier>iso</dc-qualifier>
-         <repeatable>false</repeatable>
-         <label>Language</label>
-         <input-type value-pairs-name="common_iso_languages">dropdown</input-type>
-         <hint>Select the language of the main content of the item.  If the language does not appear in the list below, please select 'Other'.  If the content does not really have a language (for example, if it is a dataset or an image) please select 'N/A'.</hint>
-         <required>You must select a language for this item.</required>
-       </field>
-     </page>
-
-     <page number="2">
-       <field>
-		 <dc-schema>dc</dc-schema>
-         <dc-element>subject</dc-element>
-         <dc-qualifier></dc-qualifier>
-         <!-- An input-type of twobox MUST be marked as repeatable -->
-         <repeatable>true</repeatable>
-         <label>Subject Keywords</label>
-         <input-type>twobox</input-type>
-         <hint> Enter appropriate subject keywords or phrases below. </hint>
-         <required></required>
-         <vocabulary>srsc</vocabulary>
-       </field>
-
-       <field>
-		 <dc-schema>dc</dc-schema>
-         <dc-element>description</dc-element>
-         <dc-qualifier>abstract</dc-qualifier>
-         <repeatable>false</repeatable>
-         <label>Abstract</label>
-         <input-type>textarea</input-type>
-         <hint> Enter the abstract of the item below. </hint>
-         <required></required>
-       </field>
-
-       <field>
-		 <dc-schema>dc</dc-schema>
-         <dc-element>description</dc-element>
-         <dc-qualifier>sponsorship</dc-qualifier>
-         <repeatable>true</repeatable>
-         <label>Sponsors</label>
+         <label>Identifier 識別碼</label>
          <input-type>onebox</input-type>
-         <hint> Enter the name of any sponsors. </hint>
+         <hint>※著錄論文識別號。【例】U0005-1707200814273800　※著錄計畫編號。【例】101農科-10.2.3-檢-B4(6)　※著錄品種權證書號碼。【例】A01232</hint>
          <required></required>
-       </field>
-       
-       <field>
-		 <dc-schema>dc</dc-schema>
-         <dc-element>relation</dc-element>
-         <repeatable>true</repeatable>
-         <label>Project</label>
-         <input-type>onebox</input-type>
-         <hint> Enter the name of project, if any, that has produced this publication. </hint>
-         <required>You must enter the name of journal.</required>
        </field>
 
        <field>
-		 <dc-schema>dc</dc-schema>
-         <dc-element>relation</dc-element>
-         <dc-qualifier>ispartof</dc-qualifier>
+     <dc-schema>dc</dc-schema>
+         <dc-element>identifier</dc-element>
+         <dc-qualifier>citation</dc-qualifier>
+         <!-- An input-type of qualdrop_value MUST be marked as repeatable -->
          <repeatable>true</repeatable>
-         <label>Journal</label>
+         <label>Citation Identifier 參考資料識別碼</label>
          <input-type>onebox</input-type>
-         <hint> Enter the name of journal.</hint>
+         <hint>照樣著錄參考資料</hint>
          <required></required>
        </field>
-       
-       <field>
-		 <dc-schema>dc</dc-schema>
-         <dc-element>description</dc-element>
-         <dc-qualifier></dc-qualifier>
-         <repeatable>false</repeatable>
-         <label>Description</label>
-         <input-type>textarea</input-type>
-         <hint> Enter any other description or comments in this box. </hint>
-         <required></required>
-       </field>
+
      </page>
    </form>
 
@@ -232,7 +277,7 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <repeatable>true</repeatable>
          <label>One: Authors</label>
          <input-type>name</input-type>
-         <hint>Enter the names of the authors of this item below.</hint>
+         <hint>Enter the names of the authors of this item.</hint>
          <required></required>
        </field>
       </page>
@@ -254,41 +299,14 @@ it, please enter the types and the actual numbers or codes below.</hint>
  <!-- stores the associated stored-values in the database.                  -->
 
  <form-value-pairs>
-   <value-pairs value-pairs-name="common_identifiers" dc-term="identifier">
-     <pair>
-       <displayed-value>ISSN</displayed-value>
-       <stored-value>issn</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>Other</displayed-value>
-       <stored-value>other</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>ISMN</displayed-value>
-       <stored-value>ismn</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>Gov't Doc #</displayed-value>
-       <stored-value>govdoc</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>URI</displayed-value>
-       <stored-value>uri</stored-value>
-     </pair>
-     <pair>
-       <displayed-value>ISBN</displayed-value>
-       <stored-value>isbn</stored-value>
-     </pair>
-   </value-pairs>
-
    <value-pairs value-pairs-name="common_types" dc-term="type">
      <pair>
-       <displayed-value>Thesis and dissertation</displayed-value>
-       <stored-value>Thesis and dissertation</stored-value>
+       <displayed-value>Thesis and Dissertation</displayed-value>
+       <stored-value>Thesis and Dissertation</stored-value>
      </pair>
      <pair>
-       <displayed-value>Journal article</displayed-value>
-       <stored-value>Journal article</stored-value>
+       <displayed-value>Journal Article</displayed-value>
+       <stored-value>Journal Article</stored-value>
      </pair>
      <pair>
        <displayed-value>Research Reports</displayed-value>
@@ -365,8 +383,12 @@ it, please enter the types and the actual numbers or codes below.</hint>
        <stored-value>ja</stored-value>
      </pair>
      <pair>
-       <displayed-value>Chinese</displayed-value>
-       <stored-value>zh</stored-value>
+       <displayed-value>Chinese (Taiwan)</displayed-value>
+       <stored-value>zh_TW</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>Chinese (China)</displayed-value>
+       <stored-value>zh_CN</stored-value>
      </pair>
      <pair>
        <displayed-value>Turkish</displayed-value>
@@ -381,3 +403,5 @@ it, please enter the types and the actual numbers or codes below.</hint>
  </form-value-pairs>
 
 </input-forms>
+
+
