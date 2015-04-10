@@ -153,12 +153,12 @@ public class EmbargoManager
         }
 
         // sanity check: do not allow an embargo lift date in the past.
-        if (liftDate.before(new Date()))
+       /*if (liftDate.before(new Date()))
         {
             throw new IllegalArgumentException(
                     "Embargo lift date must be in the future, but this is in the past: "
                             + result.toString());
-        }
+        }*/
         return result;
     }
 
