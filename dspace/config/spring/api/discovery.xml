@@ -270,6 +270,7 @@
 				<ref bean="searchFilterIssued" />
 				<ref bean="searchFilterObjectType" />
 				<ref bean="searchFilterObjectPeople" />
+				<ref bean="searchFilterAwards" />
 			<!--	<ref bean="searchFilterObjectOU" />-->
 			</list>
 		</property>
@@ -282,6 +283,7 @@
 				<ref bean="searchFilterObjectType" />
 				<ref bean="searchFilterObjectPeople" />
 				<ref bean="searchFilterObjectOU" />
+				<ref bean="searchFilterAwards" />
 			</list>
 		</property>
 		<!--The sort filters for the discovery search -->
@@ -917,6 +919,18 @@
 		<property name="metadataFields">
 			<list>
 				<value>dc.date</value>
+			</list>
+		</property>
+		<property name="type" value="date" />
+		<property name="sortOrder" value="VALUE" />
+	</bean>
+
+	<bean id="searchFilterAwards"
+		class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+		<property name="indexFieldName" value="awards" />
+		<property name="metadataFields">
+			<list>
+				<value>dc.awards</value>
 			</list>
 		</property>
 		<property name="type" value="date" />

@@ -73,6 +73,17 @@
        </field>
 
        <field>
+     <dc-schema>dc</dc-schema>
+         <dc-element>awards</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>true</repeatable>
+         <label>Academic Research Excellence Awards 教師績效獎勵</label>
+         <input-type>onebox</input-type>
+         <hint>教師績效獎得獎年分。</hint>
+         <required></required>
+       </field>
+
+       <field>
 		 <dc-schema>dc</dc-schema>
          <dc-element>date</dc-element>
          <dc-qualifier></dc-qualifier>
@@ -216,6 +227,18 @@
          <hint>著錄該書之ISBN，不加「-」符號。【例】9789866286377</hint>
          <required></required>
        </field>
+
+       <field>
+     <dc-schema>dc</dc-schema>
+         <dc-element>identifier</dc-element>
+         <dc-qualifier>issn</dc-qualifier>
+         <repeatable>true</repeatable>
+         <label>ISSN 國際標準期刊號</label>
+         <input-type>onebox</input-type>
+         <hint>※著錄期刊之ISSN，加「-」符號。【例】2041-6156</hint>
+         <required></required>
+       </field>
+
 
        <field>
      <dc-schema>dc</dc-schema>
