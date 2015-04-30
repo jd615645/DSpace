@@ -97,6 +97,13 @@
     
     VersionHistory history = (VersionHistory)request.getAttribute("versioning.history");
     List<Version> historyVersions = (List<Version>)request.getAttribute("versioning.historyversions");
+
+    String doi = "";
+    DCValue[] doiValue = item.getDC("identifier", "doi", Item.ANY);
+    if (doiValue.length != 0)
+    {
+        doi = doiValue[0].value;
+    }
 %>
 
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
@@ -123,6 +130,7 @@ ajaxPMCCitedBy = function(args) {
 }
 j(document).ready(function() {
         ajaxPMCCitedBy('<%= item.getID()%>');
+        if(j('.altmetric-embed').eq(0).attr('data-doi')!="") j('#altmetric').removeAttr('style');
 });
 --></script>
 </c:set>
@@ -284,8 +292,12 @@ j(document).ready(function() {
 <div class="panel-heading">Citations:</div>
 <div class="panel-body">
        <li id="pmcCitedCount" style="display: none;"><div id="pmcCitedResult" class="citedByDiv"></div></li>
-       <br>
-       <div data-badge-details="right" data-badge-type="medium-donut" data-doi="<%out.println(item.getMetadata("dc.identifier.doi").length >= 1 ? item.getMetadata("dc.identifier.doi")[0].value : "--");%>" data-hide-no-mentions="true" class="altmetric-embed"></div>
+       <div id="altmetric" style="display: none;">
+           <br>
+           <li>Altmetric:</li>
+           <br>
+       </div>
+       <div data-badge-details="right" data-badge-type="medium-donut" data-doi="<%= doi %>" data-hide-no-mentions="true" class="altmetric-embed"></div>
 </div>
 </div>
 
