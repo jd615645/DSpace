@@ -33,25 +33,34 @@ jQuery(document).ready(function(){
 
 
 //facets page turning
-jQuery(document).ready(function facet(){
-    jQuery('.facet .next').click(function(e){
+j(function facet(){
+    j('.facet').on('click', '.page', function(e){
       e.preventDefault(); 
-      a=jQuery(this).attr('href');
-      b=jQuery(this).parents('.facet').attr('id');
-      jQuery.get( a, function( data ) {
-         jQuery( "#"+b ).html( jQuery(data).find( "#"+b).children() );
-         facet();
-      });
-    });
-
-    jQuery('.facet .previous').click(function(e){
-      e.preventDefault(); 
-      a=jQuery(this).attr('href');
-      b=jQuery(this).parents('.facet').attr('id');
-      jQuery.get( a, function( data ) {
-         jQuery( "#"+b ).html( jQuery(data).find( "#"+b).children() );
-         facet();
+      a=j(this).attr('href');
+      b=j(this).parents('.facet').attr('id');
+      j.get( a, function( data ) {
+         j( "#"+b ).html( j(data).find( "#"+b).children() );
       });
     });
 });
+// jQuery(document).ready(function facet(){
+//     jQuery('.facet .next').click(function(e){
+//       e.preventDefault(); 
+//       a=jQuery(this).attr('href');
+//       b=jQuery(this).parents('.facet').attr('id');
+//       jQuery.get( a, function( data ) {
+//          jQuery( "#"+b ).html( jQuery(data).find( "#"+b).children() );
+//          facet();
+//       });
+//     });
 
+//     jQuery('.facet .previous').click(function(e){
+//       e.preventDefault(); 
+//       a=jQuery(this).attr('href');
+//       b=jQuery(this).parents('.facet').attr('id');
+//       jQuery.get( a, function( data ) {
+//          jQuery( "#"+b ).html( jQuery(data).find( "#"+b).children() );
+//          facet();
+//       });
+//     });
+// });

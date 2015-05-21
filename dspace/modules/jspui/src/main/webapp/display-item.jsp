@@ -106,6 +106,10 @@
     }
 %>
 
+<style type="text/css">
+    .metadataFieldValue{ word-break:break-word; }
+</style>
+
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
 
 <% if(pmcEnabled) { %>

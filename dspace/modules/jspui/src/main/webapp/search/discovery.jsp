@@ -738,7 +738,7 @@ else
 	    {
 	        %><li class="list-group-item"><span style="visibility: hidden;">.</span>
 	        <% if (currFp > 0) { %>
-	        <a class="pull-left previous" href="<%= "?query="
+	        <a class="pull-left page" href="<%= "?query="
                 + URLEncoder.encode(query,"UTF-8")
 				+ "&amp;location=" + searchScope
                 + "&amp;sort_by=" + sortedBy
@@ -749,7 +749,7 @@ else
                 + "&amp;"+f+"_page="+(currFp-1) %>"><fmt:message key="jsp.search.facet.refine.previous" /></a>
             <% } %>
             <% if (idx == limit) { %>
-            <a class="pull-right next" href="<%= "?query="
+            <a class="pull-right page" href="<%= "?query="
                 + URLEncoder.encode(query,"UTF-8")
 				+ "&amp;location=" + searchScope
                 + "&amp;sort_by=" + sortedBy

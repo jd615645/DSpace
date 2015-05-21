@@ -107,12 +107,12 @@
 		    {
 		        %><li class="list-group-item"><span style="visibility: hidden;">.</span>
 		        <% if (currFp > 0) { %>
-		        <a class="pull-left previous" href="<%= request.getContextPath()
+		        <a class="pull-left page" href="<%= request.getContextPath()
 		                + searchScope
 		                + "?"+f+"_page="+(currFp-1) %>"><fmt:message key="jsp.search.facet.refine.previous" /></a>
 	            <% } %>
 	            <% if (idx > limit) { %>
-	            <a class="pull-right next" href="<%= request.getContextPath()
+	            <a class="pull-right page" href="<%= request.getContextPath()
 		            + searchScope
 	                + "?"+f+"_page="+(currFp+1) %>"><fmt:message key="jsp.search.facet.refine.next" /></a>
 	            <%
