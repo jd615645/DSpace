@@ -161,14 +161,14 @@
 				}
 			});
         jQ('th.sortable').click(function(){
-            var cls = jQ(this).attr('class');
-            var pos = cls.indexOf('sort_',0);
-            var endPos = cls.indexOf(' ',pos);
-            if (endPos == -1) endPos = cls.length;
-            var sortby = cls.substr(pos+5,endPos-pos-5);
-            jQ('#update-form').find('input[name="order"]').val(jQ(this).hasClass("sorted_asc")?"DESC":"ASC");
-            jQ('#update-form').find('input[name="sort_by"]').val('bi_sort_'+sortby+'_sort');
-            jQ('#update-form').submit();
+            // var cls = jQ(this).attr('class');
+            // var pos = cls.indexOf('sort_',0);
+            // var endPos = cls.indexOf(' ',pos);
+            // if (endPos == -1) endPos = cls.length;
+            // var sortby = cls.substr(pos+5,endPos-pos-5);
+            // jQ('#update-form').find('input[name="order"]').val(jQ('#update-form').find('input[name="order"]').attr("value")=='asc'?"DESC":"ASC");
+            // jQ('#update-form').find('input[name="sort_by"]').val('bi_sort_'+sortby+'_sort');
+            // jQ('#update-form').submit();
    		});
 	});
 </script>		
@@ -773,30 +773,32 @@ else
 </dspace:layout>
 
 <script type="text/javascript">
-  var loc="";
-  var str=location.href.split("?");
-  var cur={'bi_sort_2_sort':'DESC', 'bi_sort_1_sort':'ASC'};
-  var sort="", order="";
-  if(str.length>1){
-      loc="?";
-      str=str[1].split('&');
-      for(var i=0; i<str.length; i++){
-        if(str[i].match('sort_by='))  sort=str[i].split('=')[1];
-        else if(str[i].match('order='))  order=str[i].split('=')[1];
-        else  loc+="&"+str[i];
+  var url
+  j('.discovery-result-results').on('click', 'th.sortable', function(e){
+    e.preventDefault();
+    sort(url);
+  });
+  function sortBy(sort_by, order) {
+    j('#update-form').find('input[name="order"]').val(j('#update-form').find('input[name="order"]').attr("value")=='ASC'?"DESC":"ASC");
+    j('#update-form').find('input[name="sort_by"]').val('bi_sort_'+sort_by+'_sort');
+    url = location.href.split("?")[0]+'?'+j('#update-form').serialize();
+  }
+
+  j('.discovery-result-results').parents('.col-md-8').on('click', '.pagination li a', function(e){
+    e.preventDefault();
+    url = location.href.split("/simple-search")[0]+j(this).attr('href');
+    sort(url);
+  });
+
+  function sort(url){
+    j.get( url, function(data){
+      j('.discovery-result-results').find('table').html( j(data).find('.discovery-result-results').find('table').children() );
+      var cur = j('#update-form').find('input[name="sort_by"]').val().split('_')[2];
+      j('.sort_'+cur).find('i').removeClass('fa-sort').addClass('fa-sort-'+ (j('#update-form').find('input[name="order"]').attr("value")=='ASC'?"desc":"asc") );
+
+      for(i=0; i<j('.pagination').length; i++){
+        j('.pagination').eq(i).html( j(data).find('.pagination').eq(i).children() );
       }
+    });
   }
-
-
-  function s(){
-    if(order.match('DESC')) cur[sort]='ASC';
-    else  cur[sort]='DESC';
-  }
-
-  if(sort!="" && order!="") s();
-
-  jQuery('.discovery-result-results #t1').find('a').removeAttr("onclick").attr('href', loc+'&sort_by=bi_sort_2_sort&order='+cur['bi_sort_2_sort']);
-  jQuery('.discovery-result-results #t2').find('a').removeAttr("onclick").attr('href', loc+'&sort_by=bi_sort_1_sort&order='+cur['bi_sort_1_sort']);
-
-  if(sort!="")  jQuery('#sort_by').find('#'+sort).attr('selected', 'selected');
 </script>

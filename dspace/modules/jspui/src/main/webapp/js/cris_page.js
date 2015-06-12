@@ -32,7 +32,6 @@ j(function cris_sort(){
     var url = j("[role='tablist']").find('.active a').attr('href').split('#')[0].split('?')[0];
     var sort = j(this).attr('onclick').split('(')[1].split(')')[0].split(',');
     url = url + "?" + sortBy(sort[0], sort[1].split('\'')[1]);
-    console.log(url);
 
     var id = j(this).parents("[role='tabpanel']");
     if(id.children('div').length<2) id=id.children('div').attr('id');

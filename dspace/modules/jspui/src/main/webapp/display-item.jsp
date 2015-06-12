@@ -298,7 +298,7 @@ j(document).ready(function() {
        <li id="pmcCitedCount" style="display: none;"><div id="pmcCitedResult" class="citedByDiv"></div></li>
        <div id="altmetric" style="display: none;">
            <br>
-           <li>Altmetric:</li>
+           <li>Altmetric: </li>
            <br>
        </div>
        <div data-badge-details="right" data-badge-type="medium-donut" data-doi="<%= doi %>" data-hide-no-mentions="true" class="altmetric-embed"></div>
