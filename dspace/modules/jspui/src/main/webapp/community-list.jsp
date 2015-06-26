@@ -49,80 +49,27 @@
     ItemCounter ic = new ItemCounter(UIUtil.obtainContext(request));
 %>
 
-<%--!
-    void showCommunity(String listType, String listNum, Community c, JspWriter out, HttpServletRequest request, ItemCounter ic,
-            Map collectionMap, Map subcommunityMap) throws ItemCountException, IOException, SQLException
-    {
-        boolean showLogos = ConfigurationManager.getBooleanProperty("jspui.community-list.logos", true);
-        out.println( "<li class=\"media well\">" );
-        Bitstream logo = c.getLogo();
-        if (showLogos && logo != null)
-        {
-            out.println("<a class=\"pull-left col-md-2\" href=\"" + request.getContextPath() + "/handle/" 
-                + c.getHandle() + "\"><img class=\"media-object img-responsive\" src=\"" + 
-                request.getContextPath() + "/retrieve/" + logo.getID() + "\" alt=\"community logo\"></a>");
-        }
-        out.println( "<div class=\"media-body\"><div class=\"trigger\"><div class=\"close\" ><span aria-hidden=\"true\">+</span><span class=\"sr-only\">Close</span></div><h4 class=\"media-heading\"><a href=\"" + request.getContextPath() + "/handle/" 
-            + c.getHandle() + "\">" + c.getMetadata("name") + "</a>");
-        if(ConfigurationManager.getBooleanProperty("webui.strengths.show"))
-        {
-            out.println(" <span class=\"badge\">" + ic.getCount(c) + "</span>");
-        }
-        out.println("</h4>");
-        if (StringUtils.isNotBlank(c.getMetadata("short_description")))
-        {
-            out.println(c.getMetadata("short_description"));
-        }
-        out.println("<br></div>");
-        // Get the collections in this community
-        Collection[] cols = (Collection[]) collectionMap.get(c.getID());
-        if (cols != null && cols.length > 0)
-        {
-            out.println("<ul class=\"" + listType + "\" id=\"" + listNum + "\" style=\"display: none;\">");
-            for (int j = 0; j < cols.length; j++)
-            {
-                out.println("<li class=\"media well\">");
-                
-                Bitstream logoCol = cols[j].getLogo();
-                if (showLogos && logoCol != null)
-                {
-                    out.println("<a class=\"pull-left col-md-2\" href=\"" + request.getContextPath() + "/handle/" 
-                        + cols[j].getHandle() + "\"><img class=\"media-object img-responsive\" src=\"" + 
-                        request.getContextPath() + "/retrieve/" + logoCol.getID() + "\" alt=\"collection logo\"></a>");
-                }
-                out.println("<div class=\"media-body\"><h4 class=\"media-heading\"><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") +"</a>");
-                if(ConfigurationManager.getBooleanProperty("webui.strengths.show"))
-                {
-                    out.println(" [" + ic.getCount(cols[j]) + "]");
-                }
-                out.println("</h4>");
-                if (StringUtils.isNotBlank(cols[j].getMetadata("short_description")))
-                {
-                    out.println(cols[j].getMetadata("short_description"));
-                }
-                out.println("</div>");
-                out.println("</li>");
-            }
-            out.println("</ul>");
-        }
-
-        // Get the sub-communities in this community
-        Community[] comms = (Community[]) subcommunityMap.get(c.getID());
-        if (comms != null && comms.length > 0)
-        {
-            out.println("<ul class=\"media-list\" id=\"" + listNum + "\" style=\"display: none;\">");
-            for (int k = 0; k < comms.length; k++)
-            {
-                String subListNum=listNum+"-"+k;
-                String subListType="sub"+listType;
-               showCommunity(subListType, subListNum, comms[k], out, request, ic, collectionMap, subcommunityMap);
-            }
-            out.println("</ul>"); 
-        }
-        out.println("</div>");
-        out.println("</li>");
+<style type="text/css">
+    td{
+        width: 33.3%
     }
---%>
+
+    img.media-object{
+        margin-right: 30px;
+        float: left;
+        height: 44px;
+        width: auto;
+    }
+
+    .item{
+        margin-top: 20px;
+        margin-bottom: 50px;
+    }
+
+    .media-header{
+        margin-bottom: 15px;
+    }
+</style>
 
 <%!
     void showCommunity(String listType, String listNum, Community c, JspWriter out, HttpServletRequest request, ItemCounter ic,
@@ -130,6 +77,7 @@
     {
         boolean showLogos = ConfigurationManager.getBooleanProperty("jspui.community-list.logos", true);
         out.println( "<td>" );
+        out.println( "<div class=\"media-header col-md-12\">");
         Bitstream logo = c.getLogo();
         if (showLogos && logo != null)
         {
@@ -137,7 +85,7 @@
                 + c.getHandle() + "\"><img class=\"media-object img-responsive\" src=\"" + 
                 request.getContextPath() + "/retrieve/" + logo.getID() + "\" alt=\"community logo\"></a>");
         }
-        out.println( "<div class=\"media-body\"><div class=\"trigger\"><h4 class=\"media-heading\"><a href=\"" + request.getContextPath() + "/handle/" 
+        out.println( "<div><h4 class=\"media-heading\"><a href=\"" + request.getContextPath() + "/handle/" 
             + c.getHandle() + "\">" + c.getMetadata("name") + "</a>");
         if(ConfigurationManager.getBooleanProperty("webui.strengths.show"))
         {
@@ -149,15 +97,24 @@
             out.println(c.getMetadata("short_description"));
         }
         out.println("<br></div>");
-        // Get the collections in this community
+        out.println( "</div>");
+
+        // Variables of collections and subcommunities
         Collection[] cols = (Collection[]) collectionMap.get(c.getID());
+        Community[] comms = (Community[]) subcommunityMap.get(c.getID());
+
+        int index=0, flag=0;
+        if ( (cols != null && cols.length > 0) || (comms != null && comms.length > 0)) out.println("<div class=\"table-responsive\"><table class=\"table table-bordered\"><tbody>");
+        // Get the collections in this community
         if (cols != null && cols.length > 0)
         {
-            out.println("<ul class=\"" + listType + "\" id=\"" + listNum + "\">");
+            //out.println("<ul class=\"" + listType + "\" id=\"" + listNum + "\">");
             for (int j = 0; j < cols.length; j++)
             {
+                if(index%3==0 && flag!=0) out.println("</tr>");
+                if(index%3==0) out.println("<tr>");
+                out.println("<td>");
                 out.println("<li>");
-                
                 Bitstream logoCol = cols[j].getLogo();
                 if (showLogos && logoCol != null)
                 {
@@ -170,22 +127,54 @@
                 {
                     out.println(" [" + ic.getCount(cols[j]) + "]");
                 }
-                /* if (StringUtils.isNotBlank(cols[j].getMetadata("short_description")))
-                {
-                    out.println(cols[j].getMetadata("short_description"));
-                } */
                 out.println("</li>");
+                out.println("</td>");
+                index++;
+                flag=1;
             }
-            out.println("</ul>");
         }
 
         // Get the sub-communities in this community
-        Community[] comms = (Community[]) subcommunityMap.get(c.getID());
         if (comms != null && comms.length > 0)
         {
-            
+            //out.println("<ul class=\"media-list\" id=\"" + listNum + "\">");
+            for (int k = 0; k < comms.length; k++)
+            {
+                String subListNum=listNum+"-"+k;
+                String subListType="sub"+listType;
+                subcommunity(subListType, subListNum, comms[k], out, request, ic, collectionMap, subcommunityMap, index);
+                index++;
+            }
         }
+        if ( (cols != null && cols.length > 0) || (comms != null && comms.length > 0)){
+            for(int i=0; i<(3-index%3)%3; i++){
+                out.println("<td></td>");
+            }
+            out.println("</tr>");
+        }
+        if ( (cols != null && cols.length > 0) || (comms != null && comms.length > 0)) out.println("</tbody></table>");
         out.println("</div>");
+    }
+
+    void subcommunity(String listType, String listNum, Community c, JspWriter out, HttpServletRequest request, ItemCounter ic,
+            Map collectionMap, Map subcommunityMap, int index) throws ItemCountException, IOException, SQLException
+    {
+        boolean showLogos = ConfigurationManager.getBooleanProperty("jspui.community-list.logos", true);
+        if(index%3==0) out.println("</tr>");
+        if(index%3==0) out.println("<tr>");
+        out.println("<td>");
+        out.println("<li>");
+        out.println("<a href=\"" + request.getContextPath() + "/handle/" 
+            + c.getHandle() + "\">" + c.getMetadata("name") + "</a>");
+        if(ConfigurationManager.getBooleanProperty("webui.strengths.show"))
+        {
+            out.println(" <span class=\"badge\">" + ic.getCount(c) + "</span>");
+        }
+        if (StringUtils.isNotBlank(c.getMetadata("short_description")))
+        {
+            out.println(c.getMetadata("short_description"));
+        }
+        out.println("</li>");
         out.println("</td>");
     }
 %>
@@ -220,23 +209,17 @@
 <% if (communities.length != 0)
 {
 %>
-    <div class="table-responsive">
-        <table class="table table-bordered">
 <% 
-        for (int i = 0; i < communities.length; i+=3)
+        for (int i = 0; i < communities.length; i++)
         {
-            out.println("<tr>");
+            out.println("<div class=\"item\">");
             String listNum="list"+i;
             String listType="media-list";
             showCommunity(listType, "list"+i, communities[i], out, request, ic, collectionMap, subcommunityMap);
-            showCommunity(listType, "list"+i+1, communities[i+1], out, request, ic, collectionMap, subcommunityMap);
-            showCommunity(listType, "list"+i+2, communities[i+2], out, request, ic, collectionMap, subcommunityMap);
-            out.println("</tr>");
+            out.println("</div>");
         }
 %>
-        </table>
-    </div>
- 
 <% }
 %>
+
 </dspace:layout>
