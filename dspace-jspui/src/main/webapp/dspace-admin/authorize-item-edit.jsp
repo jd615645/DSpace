@@ -55,7 +55,8 @@
 <%@ page import="org.dspace.core.Constants"           %>
 <%@ page import="org.dspace.eperson.EPerson"          %>
 <%@ page import="org.dspace.eperson.Group"            %>
-
+<%@ page import="java.util.Date"      %>
+<%@ page import="java.util.Calendar"      %>
 
 <%
     // get item and list of policies
@@ -233,12 +234,11 @@
             <br/>
             <table class="table" summary="This table displays the bitstream data">
             <tr>
-                <th class="oddRowOddCol"><strong><fmt:message key="jsp.general.id" /></strong></th>
-                <th class="oddRowEvenCol"><strong><fmt:message key="jsp.dspace-admin.general.action"/></strong></th>
-                <th class="oddRowOddCol"><strong><fmt:message key="jsp.dspace-admin.authorize-item-edit.eperson" /></strong></th>
-                <th class="oddRowEvenCol"><strong><fmt:message key="jsp.dspace-admin.general.group"/></strong></th>
-                <th class="oddRowOddCol">&nbsp;</th>
-            </tr>
+            	<th class="oddRowOddCol"><strong><fmt:message key="jsp.dspace-admin.general.period"/></strong></th>
+		<th class="oddRowEvenCol"><strong><fmt:message key="jsp.dspace-admin.authorize-item-edit.eperson" /></strong></th>
+		<th class="oddRowOddCol"><strong><fmt:message key="jsp.dspace-admin.general.group"/></strong></th>
+		<th class="oddRowEvenCol">&nbsp;</th>
+	    </tr>
 <%
     row = "even";
 
@@ -248,7 +248,31 @@
         <tr>
             <td class="<%= row %>RowOddCol"><%= rp.getID() %></td>
             <td class="<%= row %>RowEvenCol">
-                    <%= rp.getActionText() %>
+            <td class="<%= row %>RowOddCol">
+		<%
+			Date date;
+			if ((date = rp.getStartDate()) != null){
+				Calendar start_cal = Calendar.getInstance();
+				start_cal.setTime(date);
+				out.print(start_cal.get(Calendar.DAY_OF_MONTH));
+				out.print("/");
+				out.print(start_cal.get(Calendar.MONTH) + 1);
+				out.print("/");
+				out.println(start_cal.get(Calendar.YEAR));
+ 			}
+			out.println("-");
+			if ((date = rp.getEndDate()) != null){
+				Calendar end_cal = Calendar.getInstance();
+				end_cal.setTime(date);
+				out.print(end_cal.get(Calendar.DAY_OF_MONTH));
+				out.print("/");
+				out.print(end_cal.get(Calendar.MONTH) + 1);
+				out.print("/");
+				out.println(end_cal.get(Calendar.YEAR));
+			}
+		%>
+	</td> 
+		     <%= rp.getActionText() %>
             </td>
             <td class="<%= row %>RowOddCol">
                     <%= (rp.getEPerson() == null ? "..." : rp.getEPerson().getEmail() ) %>  

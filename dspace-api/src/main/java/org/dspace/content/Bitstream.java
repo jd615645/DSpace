@@ -26,6 +26,11 @@ import org.dspace.storage.rdbms.DatabaseManager;
 import org.dspace.storage.rdbms.TableRow;
 import org.dspace.storage.rdbms.TableRowIterator;
 
+import java.util.Date;
+import java.util.Calendar;
+import org.dspace.authorize.ResourcePolicy;
+import java.util.Iterator;
+
 /**
  * Class representing bitstreams stored in the DSpace system.
  * <P>
@@ -750,4 +755,45 @@ public class Bitstream extends DSpaceObject
     {
         modified = true;
     }
+	public boolean isEmbargoed(){
+	// may be a better name is: isUnderEmbargo() ?
+		ResourcePolicy policy;
+		try{
+			policy = getAnonymousReadPolicy();
+		}catch (SQLException e){
+			return true;
+		}
+		if(policy == null){
+			return true;
+		}else{
+			return !policy.isDateValid();
+		}
+	}			
+	
+	public Date getEmbargoEndDate(){
+		ResourcePolicy policy;
+		try{
+			policy = getAnonymousReadPolicy();
+		}catch (SQLException e){
+			return null;
+		}	
+		if(policy == null){
+			return null;
+		}
+		else{
+			return policy.getStartDate();
+		}
+	}
+	
+	public ResourcePolicy getAnonymousReadPolicy() throws SQLException{
+		ResourcePolicy thePolicy = null;
+		List policies = AuthorizeManager.getPoliciesActionFilter(bContext, this, Constants.READ);
+		for(Iterator i = policies.iterator(); i.hasNext(); ){
+			ResourcePolicy policy = (ResourcePolicy)i.next();
+			if(policy.getGroupID() == 0){ // anonymous group
+					thePolicy = policy;
+			}
+		}
+		return thePolicy;
+	}	
 }

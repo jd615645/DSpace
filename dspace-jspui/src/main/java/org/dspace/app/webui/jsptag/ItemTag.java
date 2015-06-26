@@ -47,6 +47,11 @@ import org.dspace.core.I18nUtil;
 import org.dspace.core.PluginManager;
 import org.dspace.core.Utils;
 
+import org.dspace.authorize.AuthorizeManager;
+import org.dspace.core.Context;
+import java.util.Date;
+import java.util.Calendar;
+
 /**
  * <P>
  * JSP tag for displaying an item.
@@ -879,14 +884,32 @@ public class ItemTag extends TagSupport
             					}
 
             					out.print("<a class=\"btn btn-primary\" ");
-            					out
-                                    .print(bsLink
-                                            + LocaleSupport
-                                                    .getLocalizedMessage(
-                                                            pageContext,
-                                                            "org.dspace.app.webui.jsptag.ItemTag.view")
-                                            + "</a>");
-            					
+						Date date = bitstreams[k].getEmbargoEndDate();
+	 					if (bitstreams[k].isEmbargoed() && (handle != null || date != null)){
+							out.println(LocaleSupport.getLocalizedMessage(pageContext,"org.dspace.app.webui.jsptag.ItemTag.underEmbargo"));
+   							if (date != null){
+     								out.print(LocaleSupport.getLocalizedMessage(pageContext,"org.dspace.app.webui.jsptag.ItemTag.embargoUntil"));
+     								Calendar cal = Calendar.getInstance();
+     								cal.setTime(date);
+     								out.print(cal.get(Calendar.DAY_OF_MONTH));
+     								out.print("/");
+     								out.print(cal.get(Calendar.MONTH) + 1);
+     								out.print("/");
+     								out.println(cal.get(Calendar.YEAR));
+   							}
+ 						}
+ 						context = null;
+ 						boolean allowed = false;
+ 						try{
+   							context = UIUtil.obtainContext(request);
+   							allowed = AuthorizeManager.authorizeActionBoolean(context,bitstreams[k],Constants.READ);
+ 						}catch (SQLException e){
+   							allowed = false;
+ 						}
+ 						if (!bitstreams[k].isEmbargoed() || allowed){
+   							out.println(bsLink+ LocaleSupport.getLocalizedMessage(pageContext,"org.dspace.app.webui.jsptag.ItemTag.view")+ "</a>");
+ 						}
+						//out.println("</td></tr>");	
 								try {
 									if (showRequestCopy && !AuthorizeManager
 											.authorizeActionBoolean(context,

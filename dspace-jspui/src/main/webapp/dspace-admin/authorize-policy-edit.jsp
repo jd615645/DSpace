@@ -46,7 +46,8 @@
 <%@ page import="org.dspace.core.Constants"           %>
 <%@ page import="org.dspace.eperson.EPerson"          %>
 <%@ page import="org.dspace.eperson.Group"            %>
-
+<%@ page import="java.util.Date"                      %>
+<%@ page import="java.util.Calendar"                  %>
 
 <%
     ResourcePolicy policy = (ResourcePolicy) request.getAttribute("policy"    );
@@ -61,6 +62,17 @@
     // to check what actions to present
     int resourceType      = policy.getResourceType();
     int resourceRelevance = 1 << resourceType;
+	Calendar start_cal = null;
+	Calendar end_cal = null;
+	Date date = null;
+	if ((date = policy.getStartDate()) != null){
+		start_cal = Calendar.getInstance();
+		start_cal.setTime(date);
+	}
+	if ((date = policy.getEndDate()) != null){
+		end_cal = Calendar.getInstance();
+		end_cal.setTime(date);
+	}
     
     request.setAttribute("LanguageSwitch", "hide");  
 %>
@@ -79,8 +91,7 @@
         <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.site-admin\") + \"#authorize\"%>"><fmt:message key="jsp.help"/></dspace:popup>
         </h1>
             
-    <form action="<%= request.getContextPath() %>/tools/authorize" method="post">
-
+<form action="<%= request.getContextPath() %>/dspace-admin/authorize" method="post" <%=(resourceType == 0)?"onSubmit=\"return validate(this)\"":"" %> >
  		<div class="input-group">
  				<span class="col-md-2">
             	<%-- <td>Group:</td> --%>
