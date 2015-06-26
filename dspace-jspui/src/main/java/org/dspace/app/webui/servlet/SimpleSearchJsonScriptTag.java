@@ -62,74 +62,6 @@ public class SimpleSearchJsonScriptTag extends DSpaceServlet
 
     private static Logger log = Logger.getLogger(SimpleSearchJsonScriptTag.class);
 
-    private class SimpleSearchJsonScriptTagResponse{
-        public SimpleSearchJsonScriptTagResponse(String query,int rowslength,int start,int total,List<Item> resultsListItem){
-            this.query = query;
-            this.rowslength = rowslength;
-            this.start = start;
-            this.total = total;
-
-            this.rows = new HashMap<String, Object>[resultsListItem.length];
-            HashMap<String, Object> rowTmp;
-            Item curItem;
-            Iterator it;
-            Map.Entry pair;
-            DCValue[] metaTmp;
-            String[] metaArrRes;
-            Collection coll;
-            Community[] comm;
-            for(int i = 0; i < resultsListItem.size(); i++){
-                rowTmp = new HashMap<String, Object>();
-                curItem = resultsListItem.get(i);
-
-                // columns for metadata from config
-                it = ssjstResponseSchema.entrySet().iterator();
-                while (it.hasNext()) {
-                    pair = (Map.Entry)it.next();
-                    metaTmp = curItem.getMetadata(pair.getValue()[0], pair.getValue()[1],pair.getValue()[2], Item.ANY);
-                    if (metaTmp != null) {
-                        if(metaTmp.length == 1){
-                            rowTmp.put(pair.getKey(),metaTmp[0].value);
-                        }
-                        else{
-                            metaArrRes = new String[metaTmp.length];
-                            for (int j = 0;j < metaTmp.length; j++) {
-                                metaArrRes[j] = metaTmp[j].value;
-                            }
-                            rowTmp.put(pair.getKey(),metaArrRes);
-                        }
-                    }
-                    it.remove(); // avoids a ConcurrentModificationException
-                }
-                
-                // columns to be added automatically:collhandle, collname, commhandle, commname, handle, id, summary, type
-                coll = curItem.getOwningCollection();
-                rowTmp.put("collhandle",coll.getHandle());
-                rowTmp.put("collname",coll.getHandle());
-
-                comm = curItem.getCommunities();
-                rowTmp.put("commhandle",comm[0].getHandle());
-                String commname = comm[0].getName();
-                for (int j = 1;j < comm.length; j++) {
-                    commname += ", " + comm[j].getName();
-                }
-                rowTmp.put("commname",commname);
-                rowTmp.put("handle",curItem.getHandle());
-                rowTmp.put("id",start + i);
-                rowTmp.put("type",ssjstResponseTypeValue);
-
-                rows[i] = rowTmp;
-            }
-
-
-        }
-        String query;
-        HashMap<String, Object>[] rows;
-        int rowslength;
-        int start;
-        int total;
-    }
-
     // @Override
     // protected void doDSPost(Context context, HttpServletRequest request,
     //         HttpServletResponse response) throws ServletException, IOException,
@@ -178,28 +110,11 @@ public class SimpleSearchJsonScriptTag extends DSpaceServlet
                 }
             }
 
-            // resultsItems = new Item[resultsListItem.size()];
-            // resultsItems = resultsListItem.toArray(resultsItems);
-
             // Log
             log.info(LogManager.getHeader(context, "search", "scope=" + scope
                     + ",query=\"" + query + "\",results=("
                     + resultsListItem.size()
                     + ")"));
-
-            // JsonRoot res = new JsonRoot();
-            // JsonRow rows[] = new JsonRow[resultsListItem.size()];
-            // int resultStart = qResults.getStart();
-
-            for(int i = 0; i < resultsListItem.size(); i++){
-                rows[i] = new JsonRow(resultStart + i,resultsListItem.get(i));
-            }
-
-            // res.query = query;
-            // res.rows = rows;
-            // res.rowslength = qResults.getMaxResults();
-            // res.start = resultStart;
-            // res.total = qResults.getTotalSearchResults();
 
             response.getWriter().write((new Gson()).toJson(new SimpleSearchJsonScriptTagResponse(
                 query,qResults.getMaxResults(),qResults.getStart(),qResults.getTotalSearchResults(),resultsListItem
@@ -211,10 +126,74 @@ public class SimpleSearchJsonScriptTag extends DSpaceServlet
                     LogManager.getHeader(context, "search", "query="
                             + queryArgs.getQuery() + ",scope=" + scope
                             + ",error=" + e.getMessage()), e);
-            // request.setAttribute("search.error", true);
-            // request.setAttribute("search.error.message", e.getMessage());
+        }
+    }
+}
+
+class SimpleSearchJsonScriptTagResponse{
+    public SimpleSearchJsonScriptTagResponse(String query,int rowslength,int start,int total,List<Item> resultsListItem){
+        this.query = query;
+        this.rowslength = rowslength;
+        this.start = start;
+        this.total = total;
+
+        this.rows = new HashMap<String, Object>[resultsListItem.length];
+        HashMap<String, Object> rowTmp;
+        Item curItem;
+        Iterator it;
+        Map.Entry pair;
+        DCValue[] metaTmp;
+        String[] metaArrRes;
+        Collection coll;
+        Community[] comm;
+        for(int i = 0; i < resultsListItem.size(); i++){
+            rowTmp = new HashMap<String, Object>();
+            curItem = resultsListItem.get(i);
+
+            // columns for metadata from config
+            it = ssjstResponseSchema.entrySet().iterator();
+            while (it.hasNext()) {
+                pair = (Map.Entry)it.next();
+                metaTmp = curItem.getMetadata(pair.getValue()[0], pair.getValue()[1],pair.getValue()[2], Item.ANY);
+                if (metaTmp != null) {
+                    if(metaTmp.length == 1){
+                        rowTmp.put(pair.getKey(),metaTmp[0].value);
+                    }
+                    else{
+                        metaArrRes = new String[metaTmp.length];
+                        for (int j = 0;j < metaTmp.length; j++) {
+                            metaArrRes[j] = metaTmp[j].value;
+                        }
+                        rowTmp.put(pair.getKey(),metaArrRes);
+                    }
+                }
+                it.remove(); // avoids a ConcurrentModificationException
+            }
+            
+            // columns to be added automatically:collhandle, collname, commhandle, commname, handle, id, summary, type
+            coll = curItem.getOwningCollection();
+            rowTmp.put("collhandle",coll.getHandle());
+            rowTmp.put("collname",coll.getHandle());
+
+            comm = curItem.getCommunities();
+            rowTmp.put("commhandle",comm[0].getHandle());
+            String commname = comm[0].getName();
+            for (int j = 1;j < comm.length; j++) {
+                commname += ", " + comm[j].getName();
+            }
+            rowTmp.put("commname",commname);
+            rowTmp.put("handle",curItem.getHandle());
+            rowTmp.put("id",start + i);
+            rowTmp.put("type",ssjstResponseTypeValue);
+
+            rows[i] = rowTmp;
         }
 
-        // JSPManager.showJSP(request, response, "/search/discovery.jsp");
+
     }
+    String query;
+    HashMap<String, Object>[] rows;
+    int rowslength;
+    int start;
+    int total;
 }
