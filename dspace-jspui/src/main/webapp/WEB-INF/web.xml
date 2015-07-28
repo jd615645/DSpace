@@ -445,13 +445,6 @@
       <servlet-class>org.dspace.app.webui.servlet.SearchResultLogServlet</servlet-class>
   </servlet>
 
-  <servlet>
-      <servlet-name>simple-search-json-script-tag</servlet-name>
-      <servlet-class>org.dspace.app.webui.servlet.SimpleSearchJsonScriptTag</servlet-class>
-  </servlet>
-
-  
-
   <!-- shibbolized dspace -->
   <servlet>
     <servlet-name>shibboleth-login</servlet-name>
@@ -808,11 +801,6 @@
   <servlet-mapping>
     <servlet-name>request-item</servlet-name>
     <url-pattern>/request-item</url-pattern>
-  </servlet-mapping>
-
-  <servlet-mapping>
-    <servlet-name>simple-search-json-script-tag</servlet-name>
-    <url-pattern>/simple-search-json-script-tag</url-pattern>
   </servlet-mapping>
   
   <!-- Icon MIME type -->
